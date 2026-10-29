@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ecos da Salvação - Hinário</title>
+<style>
+:root{--theme-text:#fff;--book-color:var(--primary)}
+:root{
+  --primary:#1565c0;
+  --soft:#eef5ff;
+  --white:#fff;
+  --text:#172033;
+  --line:#dbe5f0;
+}
+*{box-sizing:border-box}
+html{
+  width:100%;
+  min-height:100%;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+body{
+  margin:0;
+  width:100%;
+  min-height:100vh;
+  min-height:100dvh;
+  overflow-x:hidden;
+  font-family:Cambria,serif;
+  background:#f5f7fb;
+  color:var(--text);
+  padding:0;
+}
+header{
+  width:100%;
+  min-height:82px;
+  height:auto;
+  background:var(--primary);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  /* Espaço extra no topo: impede que a barra de estado do Android cubra o título no APK */
+  padding:34px 16px 14px;
+  padding-top:max(34px,calc(env(safe-area-inset-top) + 14px));
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 3px 15px #0003;
+}
+.menuBtn,.closeBtn{
+  border:0;background:#fff;color:var(--primary);
+  width:44px;height:44px;min-width:44px;
+  border-radius:12px;font-size:24px;font-weight:bold;cursor:pointer;
+}
+.brand{margin-left:12px;min-width:0}
+.brand h1{
+  margin:0;
+  font-size:clamp(16px,4.5vw,20px);
+  line-height:1.2;
+  overflow-wrap:anywhere;
+}
+.brand small{opacity:.9;font-size:clamp(11px,3.2vw,14px)}
+
+.drawer{
+  position:fixed;left:-320px;top:0;
+  width:min(300px,88vw);
+  height:100vh;height:100dvh;
+  background:#fff;z-index:50;
+  padding:16px;
+  padding-top:max(16px,env(safe-area-inset-top));
+  padding-bottom:max(16px,env(safe-area-inset-bottom));
+  transition:.25s;box-shadow:4px 0 25px #0004;
+  overflow-y:auto;
+}
+.drawer.open{left:0}
+.drawerHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.navBtn{
+  width:100%;border:0;background:#fff;padding:15px;
+  text-align:left;border-bottom:1px solid var(--line);
+  font-size:clamp(16px,4vw,18px);font-weight:bold;cursor:pointer;
+}
+.navBtn:hover{background:var(--soft);color:var(--primary)}
+.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:40}
+.overlay.show{display:block}
+.themeTitle{margin:18px 0 8px;font-size:12px;font-weight:bold;color:#667}
+.themes{display:flex;gap:9px;flex-wrap:wrap}
+.theme{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #bbb;cursor:pointer}
+.blue{background:#1565c0}.green{background:#198754}.lilac{background:#8e44ad}.orange{background:#e67e22}.pink{background:#d63384}.teal{background:#008b8b}
+
+main{
+  width:100%;
+  max-width:900px;
+  margin:0 auto;
+  padding:clamp(20px,5vw,34px) clamp(12px,3.5vw,20px);
+  min-height:calc(100dvh - 110px);
+}
+.hero{
+  width:100%;
+  background:var(--primary);
+  color:#fff;border-radius:clamp(18px,5vw,22px);
+  padding:clamp(22px,7vw,34px);
+  text-align:center;
+}
+.hero h2{
+  margin:0 0 10px;
+  font-size:clamp(24px,7vw,40px);
+  line-height:1.2;
+  overflow-wrap:anywhere;
+}
+.hero p{
+  margin:0;
+  font-size:clamp(16px,4.5vw,21px);
+  line-height:1.5;
+}
+.panel{
+  width:100%;background:#fff;
+  border-radius:clamp(16px,5vw,20px);
+  padding:clamp(16px,4vw,22px);
+  margin-top:18px;
+  box-shadow:0 4px 20px #00000012;
+}
+.search{
+  width:100%;padding:16px;border:2px solid var(--line);
+  border-radius:14px;font-size:clamp(16px,4vw,18px);outline:none;
+}
+.search:focus{border-color:var(--primary)}
+.hymn{
+  width:100%;display:flex;align-items:center;gap:12px;
+  padding:14px;margin:8px 0;background:#fff;
+  border:1px solid var(--line);border-radius:14px;
+  text-align:left;font-weight:bold;cursor:pointer;
+  font-size:clamp(15px,4vw,18px);
+  line-height:1.35;
+}
+.hymn:hover{background:var(--soft);border-color:var(--primary)}
+.num{
+  background:var(--primary);color:#fff;width:34px;height:34px;
+  min-width:34px;border-radius:50%;display:grid;place-items:center;flex:none;
+}
+.modal{
+  display:none;position:fixed;inset:0;background:#0009;z-index:70;
+  padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom));
+  overflow:auto;
+}
+.modal.show{display:block}
+.box{
+  width:100%;max-width:850px;margin:10px auto;
+  background:#fff;border-radius:20px;overflow:hidden;
+  max-height:calc(100dvh - 24px);
+  display:flex;flex-direction:column;
+}
+.modalClose{
+  border:0;
+  background:#fff;
+  color:var(--primary);
+  width:42px;height:42px;min-width:42px;
+  border-radius:50%;
+  font-size:28px;line-height:1;font-weight:bold;
+  cursor:pointer;
+  display:grid;place-items:center;
+  box-shadow:0 2px 8px #0003;
+}
+.modalTop{
+  background:var(--primary);color:#fff;padding:14px 16px;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  flex:none;
+  position:sticky;
+  top:0;
+  z-index:2;
+}
+.modalTop h2{
+  margin:0;font-size:clamp(16px,4.5vw,20px);
+  line-height:1.25;overflow-wrap:anywhere;
+}
+.body{
+  padding:clamp(18px,5vw,30px);
+  text-align:center;
+  font-family:"Cambria Math",Cambria,serif;
+  font-size:clamp(16px,4.5vw,20px);
+  line-height:1.7;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.verse{margin:0 0 25px;white-space:pre-line;overflow-wrap:anywhere}
+.chorus{font-weight:700}
+.empty{color:#777;font-style:italic}
+.section h2{color:var(--primary);font-size:clamp(22px,6vw,32px)}
+.section p{font-size:clamp(16px,4.5vw,20px);line-height:1.6}
+footer{
+  text-align:center;
+  padding:20px 14px max(25px,env(safe-area-inset-bottom));
+  color:#667;
+  font-size:clamp(14px,3.8vw,17px);
+}
+@media(max-width:600px){
+  .modalTop{padding:12px 10px;gap:6px}
+  .modalTop h2{font-size:clamp(14px,3.8vw,18px)}
+  .hymnTools{gap:5px}
+  .sizeBtn,.favoriteBtn{width:42px!important;min-width:42px!important;height:42px!important;padding:6px!important}
+  .darkToggle{padding:8px 9px!important;font-size:13px}
+  .modalClose{width:42px!important;min-width:42px!important;height:42px!important}
+}
+@media(max-width:420px){
+  header{padding-left:12px;padding-right:12px;padding-top:36px}
+  .menuBtn{width:42px;height:42px;min-width:42px}
+  .brand{margin-left:9px}
+  main{padding-left:10px;padding-right:10px}
+}
+/* APK Android: alguns WebViews desenham por baixo da barra de estado e não fornecem safe-area. */
+@media (max-width:600px){
+  header{
+    padding-top:36px;
+    min-height:88px;
+  }
+}
+@media(max-height:600px){
+  main{padding-top:12px;padding-bottom:12px}
+  .hero{padding:18px}
+  .panel{margin-top:12px}
+}
+
+
+/* ==================================================
+   CONTROLO PRINCIPAL DOS ESPAÇOS DO APK
+   Altere apenas estes 4 valores
+   ================================================== */
+:root{
+  --apk-top-space:55px;       /* espaço abaixo da barra de estado Android */
+  --home-top-space:25px;      /* espaço antes do cartão principal */
+  --home-section-gap:20px;    /* espaço entre o cartão e a pesquisa */
+  --hero-extra-padding:25px;  /* espaço interno do cartão principal */
+}
+
+/* Cabeçalho principal */
+header{
+  padding-top:var(--apk-top-space) !important;
+  padding-bottom:20px !important;
+  min-height:calc(var(--apk-top-space) + 62px) !important;
+  align-items:flex-start !important;
+}
+.brand{padding-top:2px}
+.brand h1{line-height:1.2 !important}
+.brand small{display:block;line-height:1.45;margin-top:5px}
+
+/* Menu lateral acompanha o espaço do topo */
+.drawer{
+  top:var(--apk-top-space) !important;
+  height:calc(100dvh - var(--apk-top-space)) !important;
+  padding-top:16px !important;
+}
+
+/* Página inicial */
+main{padding-top:var(--home-top-space) !important}
+.hero{padding:var(--hero-extra-padding) clamp(22px,7vw,34px) !important}
+.panel{margin-top:var(--home-section-gap) !important}
+
+/* Janela do hino */
+.modal{
+  padding-top:calc(var(--apk-top-space) + 8px) !important;
+  padding-bottom:16px !important;
+}
+.box{
+  margin:0 auto 16px !important;
+  max-height:calc(100dvh - var(--apk-top-space) - 24px) !important;
+}
+.modalTop{min-height:58px}
+.modalClose{
+  width:46px !important;
+  height:46px !important;
+  min-width:46px !important;
+  font-size:30px !important;
+}
+
+/* Ecrãs pequenos */
+@media(max-width:420px){
+  main{padding-top:var(--home-top-space) !important}
+  .hero{padding:var(--hero-extra-padding) 18px !important}
+  .panel{margin-top:var(--home-section-gap) !important}
+}
+
+
+#splash{position:fixed;inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center;font-family:Arial,sans-serif;font-weight:bold;color:var(--primary);font-size:18px;transition:opacity .35s}.hide{opacity:0;pointer-events:none}.loader{width:48px;height:48px;border:5px solid #ddd;border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.hymnDark{background:#151515!important;color:#fff!important}.hymnDark .box,.hymnDark .body{background:#151515!important;color:#fff!important}.hymnDark .modalTop{background:#111!important}.hymnTools{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:nowrap;margin-left:auto;white-space:nowrap;flex-shrink:0}.modalTop h2{padding-right:8px;flex:1;min-width:0}.sizeBtn,.favoriteBtn{flex:0 0 auto}.darkToggle{flex:0 0 auto;white-space:nowrap}.modalClose{flex:0 0 auto}.darkToggle{border:0;background:#fff;color:var(--primary);padding:8px;border-radius:10px;font-weight:bold;cursor:pointer}.aboutBtn{margin-top:18px;border-top:2px solid var(--line)}
+
+/* TELA DE ABERTURA */
+#splash{
+  background:linear-gradient(145deg,var(--primary),#0b2345)!important;
+  color:#fff!important;
+  text-align:center;
+  padding:50px;
+}
+.splashMusic{
+  width:82px;height:82px;border:2px solid #ffffff66;border-radius:50%;
+  display:grid;place-items:center;font-size:40px;margin-bottom:6px;
+  box-shadow:0 10px 30px #0004;
+}
+.splashTitle{font-size:clamp(22px,7vw,32px);font-weight:900;letter-spacing:1px}
+.splashSub{font-size:15px;letter-spacing:6px;opacity:.85;margin:5px 0 28px}
+.splashLoading{font-size:18px;font-weight:bold;margin-top:8px}
+.splashWait{font-size:13px;opacity:.8;margin-top:-8px}
+#splash .loader{border-color:#ffffff44;border-top-color:#fff}
+
+/* CABEÇALHO E MENU MAIS PROFISSIONAIS */
+header{box-shadow:0 4px 18px #0004}
+.brand h1{letter-spacing:.3px}
+.drawerHead{position:sticky;top:0;background:#fff;z-index:2;padding-bottom:10px}
+.navBtn{transition:background .2s,transform .2s}
+.navBtn:active{transform:scale(.98)}
+.themePanel .theme{border:3px solid #fff;box-shadow:0 0 0 2px #0002}
+.hymnTools .toolBtn{min-width:40px;min-height:38px}
+/* Tipografia global: a fonte escolhida em Opções vale para todo o APK */
+body, body *{font-family:var(--app-font, Cambria,serif)}
+.hymnTools{flex-wrap:wrap}
+.favoriteBtn,.sizeBtn{border:0;background:#fff;color:var(--primary);padding:8px 10px;border-radius:10px;font-weight:bold;cursor:pointer;min-width:42px;min-height:38px}
+.hymnDark .favoriteBtn,.hymnDark .sizeBtn{background:#292929;color:#fff}
+.hymnTitle{font-size:var(--hymn-title-size,20px)!important}
+
+.hymnDark .toolBtn{background:#292929;color:#fff}
+.hymnDark .modalClose{background:#292929;color:#fff}
+
+/* ACERCA DE CENTRALIZADO */
+.aboutCard{max-width:650px;margin:0 auto}
+
+
+/* JANELAS SEPARADAS — HINO E TEMAS */
+.themeModal{display:none;position:fixed;inset:0;background:#0009;z-index:80;padding:12px;overflow:auto}
+.themeModal.show{display:block}
+.themeBox{width:100%;max-width:650px;margin:calc(var(--apk-top-space) / 3) auto;background:#fff;border-radius:20px;overflow:hidden}
+.themeTop{background:var(--primary);color:#fff;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.themeTop h2{margin:0;font-size:20px}
+.themeBody{padding:22px}.themeGrid{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.themeGrid .theme{width:42px;height:42px}
+@media(max-width:420px){.themeModal{padding:8px}.themeBox{margin:20px auto}.themeBody{padding:18px}}
+/* Letra do hino em janela própria de ecrã inteiro */
+/* Letra do hino em janela própria - MAIS ABAIXADA */
+.modal{
+  padding:55px 0 0 0!important;
+  background:#fff!important;
+}
+.box{
+  max-width:none!important;
+  width:100%!important;
+  height:calc(100dvh - 55px)!important;
+  max-height:none!important;
+  margin:0!important;
+  border-radius:0!important;
+}
+.modalTop{padding-top:calc(var(--apk-top-space) - 20px)!important}
+.body{padding-bottom:40px!important}
+
+/* AJUSTE FINAL DO CABEÇALHO — MENU SUBIDO */
+header{
+  padding:25px 16px !important;
+  height:150px !important;
+  min-height:150px !important;
+  align-items:center !important;
+}
+.menuBtn{
+  font-size:50px !important;
+  width:100px !important;
+  height:100px !important;
+  min-width:100px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+.brand{
+  padding-top:0 !important;
+}
+.brand h1{
+  font-size:22px !important;
+  margin:0 !important;
+}
+
+/* ==================================================
+   NOVO LAYOUT DO HINÁRIO — estilo lista de referência
+   Cabeçalho compacto + pesquisa + hinos em linhas
+   ================================================== */
+:root{
+  --hymn-icon:"📖";
+}
+
+header{
+  height:116px !important;
+  min-height:116px !important;
+  padding:0 30px !important;
+  align-items:center !important;
+  position:sticky !important;
+  top:0 !important;
+}
+.menuBtn{
+  width:48px !important;
+  height:48px !important;
+  min-width:48px !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  color:#fff !important;
+  font-size:34px !important;
+  padding:0 !important;
+  box-shadow:none !important;
+}
+.brand{margin-left:22px !important;padding-top:0 !important}
+.brand h1{
+  color:#fff !important;
+  font-size:clamp(20px,5.2vw,28px) !important;
+  font-weight:700 !important;
+  white-space:nowrap !important;
+}
+
+/* Quando o Hinário está aberto, a lista ocupa a largura toda */
+main.hymnPage{
+  max-width:none !important;
+  padding:0 !important;
+  margin:0 !important;
+}
+.hymnPage .hymnSearchBar{
+  height:126px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:0 30px;
+  background:#fff;
+  border-bottom:1px solid #bdbdbd;
+}
+.hymnSearchIcon{
+  font-size:42px;
+  line-height:1;
+  flex:none;
+}
+.hymnSearchInput{
+  flex:1;
+  min-width:0;
+  border:0 !important;
+  outline:0 !important;
+  font-family:Cambria,serif;
+  font-size:30px;
+  color:#333;
+  background:transparent;
+}
+.hymnSearchInput::placeholder{color:#aaa;opacity:1}
+.hymnClear{
+  border:0;background:transparent;color:#777;
+  font-size:46px;line-height:1;
+  padding:0 8px;cursor:pointer;
+}
+
+.hymnPage #list{width:100%}
+.hymnPage .hymn{
+  width:100% !important;
+  min-height:126px !important;
+  margin:0 !important;
+  padding:20px 30px !important;
+  border:0 !important;
+  border-bottom:2px solid #e0e0e0 !important;
+  border-radius:0 !important;
+  background:#fff !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:28px !important;
+  color:#3f3f3f !important;
+  font-size:clamp(19px,4.8vw,27px) !important;
+  font-weight:700 !important;
+  text-align:left !important;
+}
+.hymnPage .hymn::before{content:none!important}
+.bookIcon{width:84px;min-width:84px;display:flex;align-items:center;justify-content:center}
+.bookIcon svg{width:60px;height:60px;display:block;fill:var(--book-color);transition:fill .2s ease}
+.hymnPage .hymn .num{
+  display:none !important;
+}
+.hymnPage .hymn:hover{background:#fafafa !important}
+
+@media(max-width:600px){
+  header{height:116px !important;min-height:116px !important;padding:0 28px !important}
+  .menuBtn{font-size:32px !important}
+  .brand{margin-left:18px !important}
+  .brand h1{font-size:clamp(18px,5.2vw,25px) !important}
+  .hymnPage .hymnSearchBar{height:126px;padding:0 28px;gap:14px}
+  .hymnSearchIcon{font-size:38px}
+  .hymnSearchInput{font-size:27px}
+  .hymnClear{font-size:42px}
+  .hymnPage .hymn{min-height:126px !important;padding:18px 28px !important;gap:24px !important;font-size:clamp(18px,4.8vw,25px) !important}
+}
+
+@media(max-width:420px){
+  header{padding:0 22px !important}
+  .brand{margin-left:12px !important}
+  .hymnPage .hymnSearchBar{padding:0 20px}
+  .hymnPage .hymn{padding:18px 20px !important;gap:16px !important}
+  .hymnPage .hymn::before{content:none!important}
+.bookIcon{width:84px;min-width:84px;display:flex;align-items:center;justify-content:center}
+.bookIcon svg{width:60px;height:60px;display:block;fill:var(--book-color);transition:fill .2s ease}
+}
+
+
+/* Cartão de boas-vindas mantido no topo da página do Hinário */
+.hymnPage .hymnWelcomeCard{
+  width:calc(100% - 40px);
+  margin:20px auto 18px;
+  padding:28px 24px;
+  border-radius:22px;
+  background:var(--primary);
+  color:#fff;
+  text-align:center;
+  box-shadow:0 4px 20px #00000012;
+}
+.hymnPage .hymnWelcomeCard h2{
+  margin:0 0 10px;
+  font-size:clamp(24px,7vw,40px);
+  line-height:1.2;
+}
+.hymnPage .hymnWelcomeCard p{
+  margin:0;
+  font-size:clamp(16px,4.5vw,21px);
+  line-height:1.5;
+}
+@media(max-width:420px){
+  .hymnPage .hymnWelcomeCard{
+    width:calc(100% - 20px);
+    margin:12px auto 14px;
+    padding:24px 16px;
+  }
+}
+
+
+/* ==================================================
+   CONFIGURAÇÕES — AJUSTES DE APRESENTAÇÃO
+================================================== */
+.settingsModal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.settingsModal.show{display:flex}
+.settingsBox{width:min(620px,100%);max-height:90dvh;overflow:hidden;background:#fff;border-radius:18px;box-shadow:0 12px 40px #0005;display:flex;flex-direction:column}
+.settingsTop{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #ddd}
+.settingsTop h2{margin:0;font-family:Cambria,serif}
+.settingsBody{overflow-y:auto;padding:18px 20px 24px}
+.settingsHint{margin:-4px 0 14px;color:#666;font-size:14px;line-height:1.45}.settingsGroup{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid #ddd}
+.settingsGroup:last-child{border-bottom:0;margin-bottom:0}
+.settingsGroup h3{margin:0 0 12px;font-family:Cambria,serif}
+.settingRow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:11px 0;font-family:Cambria,serif}
+.settingRow label{flex:1}
+.settingRow select,.settingRow input[type="range"],.settingRow input[type="number"]{width:190px;max-width:48%;padding:8px;border:1px solid #bbb;border-radius:8px;background:#fff}
+.settingRow input[type="range"]{padding:0}
+.settingValue{min-width:52px;text-align:right;font-weight:bold}
+.settingsReset{width:100%;padding:12px;border:0;border-radius:10px;background:var(--primary);color:var(--theme-text);font-weight:bold;font-family:Cambria,serif;cursor:pointer}
+.settingsPreview{padding:16px;border:1px solid #ccc;border-radius:12px;text-align:center;font-family:"Cambria Math",Cambria,serif}
+@media(max-width:600px){
+ .settingsModal{padding:10px}
+ .settingsBox{max-height:94dvh;border-radius:14px}
+ .settingsBody{padding:14px}
+ .settingRow{align-items:flex-start;flex-wrap:wrap}
+ .settingRow select,.settingRow input[type="range"],.settingRow input[type="number"]{width:100%;max-width:none}
+ .settingValue{margin-left:auto}
+}
+
+/* Janela própria de cada hino */
+#hymnModal{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:99999 !important;
+  width:100vw !important;
+  height:100vh !important;
+  max-width:none !important;
+  max-height:none !important;
+  margin:0 !important;
+  border-radius:0 !important;
+  overflow:hidden !important;
+}
+#hymnModal .modalBody{
+  height:calc(100vh - 70px) !important;
+  max-height:none !important;
+  overflow-y:auto !important;
+}
+
+
+.hymnBottomTools{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  background:inherit;
+  flex:none;
+}
+.hymnBottomTools .sizeBtn,
+.hymnBottomTools .favoriteBtn{
+  width:44px!important;
+  min-width:44px!important;
+  height:44px!important;
+}
+@media(max-width:600px){
+  .hymnBottomTools{gap:10px;padding:10px}
+}
+
+
+/* Não permitir copiar a letra do hino */
+#modal, #modal .box, #modal .modalTop, #modal .modalBody, #modal .body, #modal .verse{
+  -webkit-user-select:none !important;
+  user-select:none !important;
+  -webkit-touch-callout:none !important;
+}
+
+
+.hymnBottomTools{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 18px;
+  border-top:1px solid var(--line);
+  background:inherit;
+}
+.hymnBottomTools .sizeBtn,
+.hymnBottomTools .favoriteBtn,
+.hymnNavBtn{
+  flex:0 0 auto;
+}
+.hymnNavBtn{
+  border:0;
+  background:#fff;
+  color:var(--primary);
+  width:46px;
+  height:42px;
+  border-radius:10px;
+  font-size:32px;
+  line-height:1;
+  font-weight:bold;
+  cursor:pointer;
+}
+.hymnDark .hymnNavBtn{
+  background:#292929;
+  color:#fff;
+}
+
+
+.hymnNavBtn:active,.sizeBtn:active,.favoriteBtn:active{
+  transform:scale(.96);
+}
+
+</style>
+<style>
+/* Janela do hino: encostada ao topo, controlos sempre visíveis e letra logo abaixo. */
+#modal.modal{
+  padding: env(safe-area-inset-top, 0px) 0 0 !important;
+  overflow: hidden !important;
+}
+#modal .box{
+  width: 100% !important;
+  max-width: 850px !important;
+  height: calc(100dvh - env(safe-area-inset-top, 0px)) !important;
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px)) !important;
+  margin: 0 auto !important;
+  border-radius: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+#modal .modalTop{
+  flex: 0 0 auto !important;
+  position: relative !important;
+  top: auto !important;
+  padding-top: 8px !important;
+}
+#modal .hymnBottomTools{
+  flex: 0 0 auto !important;
+  position: relative !important;
+  z-index: 3 !important;
+  margin: 0 !important;
+}
+#modal .body{
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  margin: 0 !important;
+  padding: 8px clamp(12px, 3vw, 28px) 20px !important;
+  line-height: 1.55 !important;
+}
+#modal .body > :first-child,
+#modal .body p:first-child,
+#modal .body .verse:first-child{
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+#modal .verse{ margin-top: 0 !important; }
+@media (min-width: 601px){
+  #modal .box{ margin-left: auto !important; margin-right: auto !important; }
+  #modal .body{ padding-top: 8px !important; }
+}
+</style>
+</head>
+<body>
+<div id="splash">
+  <div class="splashMusic">🎼</div>
+  <div class="splashTitle">ECOS DA SALVAÇÃO</div>
+  <div class="splashSub">HINÁRIO</div>
+  <div class="loader"></div>
+  <div class="splashLoading">Processando⌛...</div>
+  <div class="splashWait"></div>
+</div><header><button class="menuBtn" onclick="toggleMenu()">☰</button><div class="brand"><h1>ECOS DA SALVAÇÃO — HINÁRIO</h1></div></header>
+<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
+<div id="themeModal" class="themeModal" onclick="if(event.target===this)closeThemes()"><div class="themeBox"><div class="themeTop"><h2>Temas</h2><button class="closeBtn" onclick="closeThemes()">×</button></div><div class="themeBody"><div class="themeGrid"><button class="theme" style="background:#1565c0" onclick="setTheme('#1565c0')" aria-label="Tema"></button><button class="theme" style="background:#198754" onclick="setTheme('#198754')" aria-label="Tema"></button><button class="theme" style="background:#8e44ad" onclick="setTheme('#8e44ad')" aria-label="Tema"></button><button class="theme" style="background:#e67e22" onclick="setTheme('#e67e22')" aria-label="Tema"></button><button class="theme" style="background:#d63384" onclick="setTheme('#d63384')" aria-label="Tema"></button><button class="theme" style="background:#008b8b" onclick="setTheme('#008b8b')" aria-label="Tema"></button><button class="theme" style="background:#c0392b" onclick="setTheme('#c0392b')" aria-label="Tema"></button><button class="theme" style="background:#f39c12" onclick="setTheme('#f39c12')" aria-label="Tema"></button><button class="theme" style="background:#27ae60" onclick="setTheme('#27ae60')" aria-label="Tema"></button><button class="theme" style="background:#16a085" onclick="setTheme('#16a085')" aria-label="Tema"></button><button class="theme" style="background:#2980b9" onclick="setTheme('#2980b9')" aria-label="Tema"></button><button class="theme" style="background:#2c3e50" onclick="setTheme('#2c3e50')" aria-label="Tema"></button><button class="theme" style="background:#7f8c8d" onclick="setTheme('#7f8c8d')" aria-label="Tema"></button><button class="theme" style="background:#6c5ce7" onclick="setTheme('#6c5ce7')" aria-label="Tema"></button><button class="theme" style="background:#00b894" onclick="setTheme('#00b894')" aria-label="Tema"></button><button class="theme" style="background:#e84393" onclick="setTheme('#e84393')" aria-label="Tema"></button><button class="theme" style="background:#fd79a8" onclick="setTheme('#fd79a8')" aria-label="Tema"></button><button class="theme" style="background:#d35400" onclick="setTheme('#d35400')" aria-label="Tema"></button><button class="theme" style="background:#8e6e53" onclick="setTheme('#8e6e53')" aria-label="Tema"></button><button class="theme" style="background:#1abc9c" onclick="setTheme('#1abc9c')" aria-label="Tema"></button><button class="theme" style="background:#3498db" onclick="setTheme('#3498db')" aria-label="Tema"></button><button class="theme" style="background:#9b59b6" onclick="setTheme('#9b59b6')" aria-label="Tema"></button><button class="theme" style="background:#34495e" onclick="setTheme('#34495e')" aria-label="Tema"></button><button class="theme" style="background:#e74c3c" onclick="setTheme('#e74c3c')" aria-label="Tema"></button><button class="theme" style="background:#f1c40f" onclick="setTheme('#f1c40f')" aria-label="Tema"></button><button class="theme" style="background:#2ecc71" onclick="setTheme('#2ecc71')" aria-label="Tema"></button><button class="theme" style="background:#00cec9" onclick="setTheme('#00cec9')" aria-label="Tema"></button><button class="theme" style="background:#0984e3" onclick="setTheme('#0984e3')" aria-label="Tema"></button><button class="theme" style="background:#a29bfe" onclick="setTheme('#a29bfe')" aria-label="Tema"></button><button class="theme" style="background:#ff7675" onclick="setTheme('#ff7675')" aria-label="Tema"></button><button class="theme" style="background:#55efc4" onclick="setTheme('#55efc4')" aria-label="Tema"></button><button class="theme" style="background:#636e72" onclick="setTheme('#636e72')" aria-label="Tema"></button><button class="theme" style="background:#ff6b6b" onclick="setTheme('#ff6b6b')" aria-label="Vermelho coral"></button><button class="theme" style="background:#ff9f43" onclick="setTheme('#ff9f43')" aria-label="Laranja vivo"></button><button class="theme" style="background:#feca57" onclick="setTheme('#feca57')" aria-label="Amarelo dourado"></button><button class="theme" style="background:#48dbfb" onclick="setTheme('#48dbfb')" aria-label="Azul céu"></button><button class="theme" style="background:#1dd1a1" onclick="setTheme('#1dd1a1')" aria-label="Verde esmeralda"></button><button class="theme" style="background:#5f27cd" onclick="setTheme('#5f27cd')" aria-label="Roxo intenso"></button><button class="theme" style="background:#54a0ff" onclick="setTheme('#54a0ff')" aria-label="Azul claro"></button><button class="theme" style="background:#ff9ff3" onclick="setTheme('#ff9ff3')" aria-label="Rosa claro"></button><button class="theme" style="background:#10ac84" onclick="setTheme('#10ac84')" aria-label="Verde jade"></button><button class="theme" style="background:#ee5253" onclick="setTheme('#ee5253')" aria-label="Vermelho vivo"></button></div></div></div></div>
+<div id="settingsModal" class="settingsModal" onclick="if(event.target===this)closeSettings()">
+<div class="settingsBox">
+<div class="settingsTop"><h2>Opções</h2><button class="closeBtn" onclick="closeSettings()">×</button></div>
+<div class="settingsBody">
+<div class="settingsGroup"><h3></h3>
+<p class="settingsHint">Estas opções são gerais e aplicam-se a todos os hinos</p>
+<div class="settingRow"><label for="fontFamily">Fonte</label><select id="fontFamily" onchange="applySettings()">
+<option value="cambriaMath">Cambria Math</option><option value="cambria">Cambria</option><option value="georgia">Georgia</option><option value="times">Times New Roman</option><option value="garamond">Garamond</option><option value="palatino">Palatino Linotype</option><option value="bookman">Bookman Old Style</option><option value="baskerville">Baskerville</option><option value="didot">Didot</option><option value="bodoni">Bodoni MT</option><option value="constantia">Constantia</option><option value="calibri">Calibri</option><option value="candara">Candara</option><option value="corbel">Corbel</option><option value="arial">Arial</option><option value="verdana">Verdana</option><option value="tahoma">Tahoma</option><option value="trebuchet">Trebuchet MS</option><option value="segoe">Segoe UI</option><option value="franklin">Franklin Gothic Medium</option><option value="century">Century Gothic</option><option value="futura">Futura</option><option value="helvetica">Helvetica</option><option value="optima">Optima</option><option value="monaco">Monaco</option><option value="consolas">Consolas</option><option value="courier">Courier New</option><option value="lucida">Lucida Console</option><option value="impact">Impact</option><option value="comic">Comic Sans MS</option><option value="brush">Brush Script MT</option><option value="copperplate">Copperplate</option><option value="papyrus">Papyrus</option><option value="rockwell">Rockwell</option><option value="perpetua">Perpetua</option><option value="segoePrint">Segoe Print</option></select></div>
+<div class="settingRow"><label for="fontSize">Tamanho da letra</label><input id="fontSize" type="range" min="12" max="40" step="1" oninput="applySettings()"><span id="fontSizeValue" class="settingValue"></span></div>
+<div class="settingRow"><label for="hymnTitleSize">Tamanho do título do hino</label><input id="hymnTitleSize" type="range" min="14" max="40" step="1" oninput="applySettings()"><span id="hymnTitleSizeValue" class="settingValue"></span></div>
+<div class="settingRow"><label for="lineHeight">Espaçamento entre linhas</label><input id="lineHeight" type="range" min="1" max="3" step="0.1" oninput="applySettings()"><span id="lineHeightValue" class="settingValue"></span></div>
+<div class="settingRow"><label for="letterSpacing">Espaçamento entre letras</label><input id="letterSpacing" type="range" min="-2" max="8" step="0.5" oninput="applySettings()"><span id="letterSpacingValue" class="settingValue"></span></div>
+</div>
+
+<div class="settingsGroup"><h3>Formatação do texto</h3>
+<div class="settingRow"><label for="fontWeight">Espessura</label><select id="fontWeight" onchange="applySettings()"><option value="300">Leve</option><option value="400">Normal</option><option value="500">Média</option><option value="600">Semi-negrito</option><option value="700">Negrito</option></select></div>
+<div class="settingRow"><label for="fontStyle">Estilo</label><select id="fontStyle" onchange="applySettings()"><option value="normal">Normal</option><option value="italic">Itálico</option><option value="oblique">Oblíquo</option></select></div>
+<div class="settingRow"><label for="textAlign">Alinhamento</label><select id="textAlign" onchange="applySettings()"><option value="center">Centralizado</option><option value="left">À esquerda</option><option value="right">À direita</option><option value="justify">Justificado</option></select></div>
+<div class="settingRow"><label for="textTransform">Formato do texto</label><select id="textTransform" onchange="applySettings()"><option value="none">Normal</option><option value="uppercase">MAIÚSCULAS</option><option value="lowercase">minúsculas</option><option value="capitalize">Primeira letra em maiúscula</option></select></div>
+<div class="settingRow"><label for="bodyPadding">Margens laterais</label><input id="bodyPadding" type="range" min="0" max="100" step="2" oninput="applySettings()"><span id="bodyPaddingValue" class="settingValue"></span></div>
+</div>
+
+<div class="settingsGroup"><h3>Configuração específica do coro</h3>
+<div class="settingRow"><label for="chorusEnabled">Destacar o coro</label><select id="chorusEnabled" onchange="applySettings()"><option value="on">Ativado</option><option value="off">Desativado</option></select></div>
+<div class="settingRow"><label for="chorusWeight">Espessura do coro</label><select id="chorusWeight" onchange="applySettings()"><option value="300">Leve</option><option value="400">Normal</option><option value="500">Média</option><option value="600">Semi-negrito</option><option value="700">Negrito</option></select></div>
+<div class="settingRow"><label for="chorusStyle">Estilo do coro</label><select id="chorusStyle" onchange="applySettings()"><option value="normal">Normal</option><option value="italic">Itálico</option><option value="oblique">Oblíquo</option></select></div>
+<div class="settingRow"><label for="chorusTransform">Formato do coro</label><select id="chorusTransform" onchange="applySettings()"><option value="none">Normal</option><option value="uppercase">MAIÚSCULAS</option><option value="lowercase">minúsculas</option><option value="capitalize">Primeira letra em maiúscula</option></select></div>
+</div>
+
+<div class="settingsGroup"><h3>Cores e fundo</h3>
+<div class="settingRow"><label for="textColor">Cor da letra</label><input id="textColor" type="color" onchange="applySettings()"></div>
+<div class="settingRow"><label for="textBackground">Fundo da letra</label><input id="textBackground" type="color" onchange="applySettings()"></div>
+<div class="settingRow"><label for="chorusColor">Cor do coro</label><input id="chorusColor" type="color" onchange="applySettings()"></div>
+</div>
+
+<div class="settingsGroup"><h3>Comportamento</h3>
+<div class="settingRow"><label for="darkMode">Modo escuro ao abrir o hino</label><select id="darkMode" onchange="applySettings()"><option value="off">Desativado</option><option value="on">Ativado</option></select></div>
+<div class="settingRow"><label for="savePreferences">Guardar preferências</label><select id="savePreferences" onchange="applySettings()"><option value="on">Ativado</option><option value="off">Desativado</option></select></div>
+</div>
+
+<div class="settingsGroup"><h3>Pré-visualização em tempo real</h3><div id="settingsPreview" class="settingsPreview">A Deus demos glória<br>Com grande fervor<br><strong>Exultai! Exultai!</strong></div></div>
+<button class="settingsReset" onclick="resetSettings()">Restaurar opções padrão</button>
+</div></div></div>
+<aside id="drawer" class="drawer"><div class="drawerHead"><b>MENU</b><button class="closeBtn" onclick="closeMenu()">×</button></div>
+<button class="navBtn" onclick="showHome();closeMenu()">🏠 Início</button><button class="navBtn" onclick="showHymns();closeMenu()">🎼 Hinário</button><button class="navBtn" onclick="showSection('Dedicatória');closeMenu()">📖 Dedicatória</button><button class="navBtn" onclick="showSection('Agradecimentos');closeMenu()">🙏 Agradecimentos</button><button class="navBtn" onclick="showSection('Introdução');closeMenu()">📝 Introdução</button><button class="navBtn" onclick="showSection('Objetivo');closeMenu()">🎯 Objetivo</button><button class="navBtn" onclick="showSection('Mensagem');closeMenu()">💬 Mensagem</button>
+<button class="navBtn" onclick="openThemes();closeMenu()">🎨 Temas</button>
+<button class="navBtn" onclick="showFavorites();closeMenu()">🌟 Favoritos</button>
+<button class="navBtn" onclick="openSettings();closeMenu()">⚙️ Opções</button>
+<button class="navBtn aboutBtn" onclick="showAbout();closeMenu()">ℹ️ Sobre</button></aside>
+<main id="app"></main>
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="box"><div class="modalTop"><h2 id="modalTitle"></h2><div class="hymnTools"><button class="darkToggle" onclick="toggleHymnDark()">🌙 Modo escuro</button><button class="modalClose" onclick="closeModal()" aria-label="Fechar hino" title="Fechar hino">×</button></div></div><div class="hymnBottomTools"><button class="hymnNavBtn" onclick="previousHymn()" aria-label="Hino anterior" title="Hino anterior">‹</button><button class="sizeBtn" onclick="changeHymnSize(-1)" aria-label="Diminuir letra" title="Diminuir letra">A−</button><button class="sizeBtn" onclick="changeHymnSize(1)" aria-label="Aumentar letra" title="Aumentar letra">A+</button><button class="favoriteBtn" id="favoriteBtn" onclick="toggleFavorite()" aria-label="Favorito" title="Favorito">☆</button><button class="hymnNavBtn" onclick="nextHymn()" aria-label="Próximo hino" title="Próximo hino">›</button></div><div id="modalBody" class="body"></div></div></div>
+<footer>© Ecos da Salvação</footer>
+<!-- ==================================================
+     HINO 1 — BU BAMANA KUTAKANA
+     
+================================================== -->
+<script>
+const hino1 = {
+    numero: 1,
+    titulo: "BU BAMANA KUTAKANA",
+    letra: "1\nBu Bamana Kutakana\nVana Mongo Wa Olive\nYesu Mpe Wakala Yau Va Mosi\nBanyuvula Ye Bavova\nKatuzeyi Ntangu Ko\nSi Wavutula Kinfumu Kia Yuda\n\nCORO\nLuenda Nata Nsamu\nMuna Nza Yayo\nSi Lua Kala Mbangui Muna\nYelusalemi; (Nza Yayo)\nYe Mu Yuda Diadio Samalia Mpe\nNateye Kunsuka Nza Yayo;\n(Buna Kayendila Ye Buna Sikisila)\n\n2\nBu Bamana Vova Momo\nYesu Mbalulu Kwa Se\nBubatala Mbasi Zole Zizi Ta\nBisi Ngalili Mu Nkiama\nLueti Tala Ku Zulo\nYesu Ndiena Lueti Tala Si Kiza\n\n3\nMbasi Bu Zamana Vova\nBuna Nlonguki Miamo\nMiete Sisa Mongo Wowo\nBakota\nMuna Seka Dio Dia Ntandu\nDida Kalanga Babo\nMuna Vinguila Luzolo Lua\nYesu"
+};
+</script>
+
+<!-- ==================================================
+     HINO 2 — MATONDO KWA NZAMBI DISE
+     
+================================================== -->
+<script>
+const hino2 = {
+    numero: 2,
+    titulo: "MATONDO KWA NZAMBI DISE",
+    letra: "1\nMatondo Kwa Nzambi Dise\n Mu Lumbu Eki Katusonguele\n Kadi Mpe Yandi Invulusi\n Mu Ngolo Zandi Tununguina \n\nCORO \nTu Vutwidi Matondo Kwa Se\n Mu Lumbu Eki Katusonguele\n Matondo Kwa Nzambi Dise\n Mu Ngolo Zandi Tununguina\n \n2\n Mu Zola Nzambi Tununguina\n Watufidisa Oh Nvulusi\n Etata Nzambi Kala Yeto\n Mu Ngolo Zaku Tununguina\n \n3\n Kadi Mpe Oh Yeto Twa Kuikila\n Mu Yesu Kaka Tu Vulusua\n Kadi Mpe Olenda Ololoka\n Masumu Meto Ova Nza"
+};
+</script>
+
+<!-- ==================================================
+     HINO 3 — A DEUS DEMOS GLÓRIA (15 C.C)
+     
+================================================== -->
+<script>
+const hino3 = {
+    numero: 3,
+    titulo: "A DEUS DEMOS GLÓRIA (15 C.C)",
+    letra: "1\nA Deus demos glória,\nCom grande fervor,\nSeu filho bendito por nós todos deu\nA graça concede ao mais vil pecador\nAbrindo-lhe a porta de entrada no céu\n\nCORO \nExultai! Exultai!\nVinde todos louvar\nA Jesus, Salvador\nA Jesus, Redentor\nA Deus demos glória\nPorquanto do céu\nSeu filho bendito por nós todos deu\n\n2\nOh! Graça real\nFoi assim que Jesus\nMorrendo, seu sangue por nós derramou\nHerança nos céus, com os santos em luz,\nComprou-nos Jesus, pois o preço pagou.\n\n3\nA crer nos convida\nTal rasgo de amor,\nNos merecimentos do filho de Deus,\nE quem, pois, confia no seu Salvador,\nVai vê-lo sentado na glória dos céus."
+};
+</script>
+
+<!-- ==================================================
+     HINO 4 — CRISTO EXALTADO (67 C.C)
+     
+================================================== -->
+<script>
+const hino4 = {
+    numero: 4,
+    titulo: "CRISTO EXALTADO (67 C.C)",
+    letra: "1\nEis entronizado a destra do bom Deus,\n Como rei eterno Cristo lá nos céus;\n Ele é o rei da glória que a Satã venceu;\n Feita tal vitória Deus o recebeu.\n\nCORO \nPela sua graça, pelo seu amor\n Seja dada a Jesus senhor\n Cordial louvor;\n\n2\n Veio resgatar-nos pela sua cruz\n Quer apresentar-nos em celeste luz\n Pela sua morte, pelo seu sofrer\n O inimigo nunca poderá vencer.\n\n3\n Mas o seu serviço continua ali\n Poderá valer-nos, entretanto, aqui\n Por nós advogando com o pai está\n Ele nos ajuda e sempre ajudará"
+};
+</script>
+
+<!-- ==================================================
+     HINO 5 — MORRI NA CRUZ (92 C.C)
+     
+================================================== -->
+<script>
+const hino5 = {
+    numero: 5,
+    titulo: "MORRI NA CRUZ (92 C.C)",
+    letra: "1\nMorri na cruz por ti\nMorri pra te livrar;\nMeu sangue, sim, verti,\nE posso te salvar.\n\nCORO \nMorri, morri na cruz por ti;\nQue fazes tu por mim?\nMorri, morri na cruz por ti\nQue fazes tu por mim?\n\n2\nAqui vivi por ti\nCom muito dissabor;\nSim, tudo fiz aqui,\nPra ser teu salvador.\n\n3\nSofri na cruz por ti\nA fim de te salvar;\nA vida consegui\nQue tu irás gozar.\n\n4\nEu trouxe salvação\nDos altos céus favor;\nÉ livre meu perdão;\nSincero meu amor."
+};
+</script>
+
+<!-- ==================================================
+     HINO 6 — AO FINDAR O LABOR (259 C.C)
+     
+================================================== -->
+<script>
+const hino6 = {
+    numero: 6,
+    titulo: "AO FINDAR O LABOR (259 C.C)",
+    letra: "1\nAo findar o labor desta vida,\nQuando a morte a teu lado chegar,\nQue destino há de ter a tua alma?\nQual será no futuro o teu lar?\n\nCORO \nMeu amigo, hoje tu tens a escolha:\nVida ou morte, qual vais aceitar?\nAmanhã pode ser muito tarde,\nHoje, Cristo te quer libertar.\n\n2\nTu procuras a paz neste mundo,\nEm prazeres que passam em vão,\nMas na última hora da vida\n Eles já não te satisfarão.\n\n3\nTens manchada tua alma e não podes,\nContemplar o semblante de Deus;\nSó os salvos por Deus, pela graça \nViverão com Jesus lá nos céus.\n\n4\nSe decides deixar teu pecados,\nE entregar tua vida a Jesus,\nEntrará, sim, na última hora\nNas gloriosas moradas de luz."
+};
+</script>
+
+<!-- ==================================================
+     HINO 7 — PASTOR DIVINO (152 C.C)
+     
+================================================== -->
+<script>
+const hino7 = {
+    numero: 7,
+    titulo: "PASTOR DIVINO (152 C.C)",
+    letra: "1\n Ouve-nos, pastor divino,\n Nós, que neste bom lugar,\n Teu rebanho congregado,\n Desejamos te adorar.\n Cristo amado, Cristo amado,\n Vem teu povo abençoar.\n Cristo amado, Cristo amado,\n Vem teu povo abençoar.\n\n2\n Ao perdido no pecado\n Seu perigo faze ver;\n Chama os pobres enganados,\n Faze-os tua voz ouvir;\n Aos enfermos, aos enfermos\n Ó senhor, vem me acudir.\n Aos enfermos, aos enfermos\n Ó senhor, vem me acudir.\n\n3\n Traze o pobre desgarrado\n Ao aprisco teu, senhor;\n Toma o tenro cordeirinho\n No regaço teu, pastor;\n Dá-lhe os pastos, dá-lhe os pastos\n De celeste e doce amor.\n Dá-lhe os pastos, dá-lhe os pastos\n De celeste e doce amor.\n\n4\n Ó Jesus, escuta o rogo,\n Nossa humilde petição;\n Vem encher o teu rebanho\n De sincera devoção;\n Cantaremos, cantaremos\n Tua afável proteção.\n Cantaremos, cantaremos\n Tua afável proteção."
+};
+</script>
+
+<!-- ==================================================
+     HINO 8 — DESLUMBRANTE (96 C.C)
+     
+================================================== -->
+<script>
+const hino8 = {
+    numero: 8,
+    titulo: "DESLUMBRANTE (96 C.C)",
+    letra: "1\n Se nos cega o sol ardente,\n Quando visto em seu fulgor,\n Quem contemplará aquele\n Que do sol é criador?\n Patriarcas, nem profetas\n O chegaram a avistar,\n Nem Adão chegou a vê-lo,\n Antes mesmo de pecar.\n\n 2\n Luz, pra a qual o sol é trevas,\n Quem te pode contemplar?\n Nossos olhos nus, humanos,\n Não te podem encarar.\n Fogo em cima de arca santa,\n Sarça ardente do Sinai,\n São figuras só da glória,\n Do senhor, do eterno pai.\n\n 3\nPara termos nós com ele,\n Franca e doce comunhão,\n Cristo, o filho, fez-se carne,\n Fez-se nossa redenção.\n Para que na glória eterna\n Nós miremo-lo sem véu,\n Cristo padeceu a morte,\n Nova entrada abrindo ao céu."
+};
+</script>
+
+<!-- ==================================================
+     HINO 9 — JERUSALÉM CELESTE LAR
+     
+================================================== -->
+<script>
+const hino9 = {
+    numero: 9,
+    titulo: "JERUSALÉM CELESTE LAR",
+    letra: "\n Jerusalém, celeste lar\n Tu és o meu prazer\n Oh! Quando eu puder te contemplar\n No teu fulgor\n No teu fulgor\n Fulgor\n Nos altos céus\n Chegar, a ti, meu lar\n Meu lar dos céus\n Pois teu fulgor\n Nos dá fervor\n Não há mais dor\n Eu quero estar naquele lar\n Seguindo pelo escuro mar de temporais\n Eu vou buscando a ti meu lar dos céus,\n Celeste lar,\n Além do escuro mar\n Além do escuro mar\n Pois vejo além, meu doce lar a li\n Vou descansar\n \n Jerusalém, celeste lar\n Minha alma clama a ti,\n Oh! Meu coração deseja ver\n Desejo estar nos altos céus, nos céus\n Gozando na luz\n Eu vou morar nos altos céus, nos altos céus\n Na pátria perenal\n Na pátria perenal"
+};
+</script>
+
+<!-- ==================================================
+     HINO 10 — SUBLIME E GRANDE AMOR (89 H.P)
+     
+================================================== -->
+<script>
+const hino10 = {
+    numero: 10,
+    titulo: "SUBLIME E GRANDE AMOR (89 H.P)",
+    letra: "1\n Conta-me, sim, de Jesus,\n Para na mente, eu gravar\n Como foi que padeceu\n Na cruz, pra me libertar:\n A sua paixão e morte,\n A começar no jardim,\n Não houve mais quem tivesse\n Um sofrimento assim!\n\nCoro\n Só amor! Só amor!\n Só amor! Sublime e grande amor!\n \n2 \n Conta-me como sentiu\n A rude morte na cruz,\n Suportando a acusação\n Dos inimigos da luz;\n Conta-me como tem dado\n Ao malfeitor sua paz,\n Dizendo: “hoje, comigo,\n no paraíso estarás”.\n \n 3\nConta-me como chorou,\n Falando a Jerusalém;\n Profetas fazes morrer,\n Quando a ti eles vêm;\n Conta-me como inda chora,\n Por causa do pecador,\n Que não quer seu evangelho,\n Proclamado com amor.\n \n 4\n Conta-me como o senhor\n Um bom testemunho deu.\n Satisfazendo a lei,\n Quando o cálice bebeu;\n Também disse estas palavras,\n Com seu tão profundo amor;\n Pai, lhes perdoa a cegueira,\n Que é própria do pecador.\n \n 5\n Conta-me como, também,\n Veio ao povo judeu,\n Povo que tanto amou,\n Querendo dar-lhe os céus;\n Como inda hoje ele ama\n A todo o pecador,\n Dando-lhe paz e descanso,\n Pelo evangelho de amor."
+};
+</script>
+
+<!-- ==================================================
+     HINO 11 — GLORIOSA PAZ (178 H.P)
+     
+================================================== -->
+<script>
+const hino11 = {
+    numero: 11,
+    titulo: "GLORIOSA PAZ (178 H.P)",
+    letra: "1\n Crendo em Cristo Jesus vim obter\n Gloriosa paz, perfeita paz:\n Inda que dores açoitem meu ser,\n Tenho doce paz!\n\nCoro\n Paz, paz, gloriosa paz;\n Paz, paz, perfeita paz;\n Desde que Cristo minh’aima salvou,\n Tenho doce paz!\n \n2\nPaz insondável, qual um grande mar,\n Gloriosa paz, perfeita paz;\n Posso nos braços de deus repousar,\n Tenho doce paz!\n\n 3\n Paz inefável de deus, que faz bem,\n Gloriosa paz, perfeita paz;\n Que dá alento à alma também,\n Tenho doce paz!\n\n 4\nE, nos conflitos com o tentador,\n gloriosa paz. Perfeita paz,\n Cristo Jesus me fará vencedor,\n Tenho doce paz!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 12 — MAIS PERTO (187 H.P)
+     
+================================================== -->
+<script>
+const hino12 = {
+    numero: 12,
+    titulo: "MAIS PERTO (187 H.P)",
+    letra: "1\nMais perto quero estar\n Meu Deus, de ti!\n Inda que seja a dor\n Que me una a ti,\n Sempre hei-de suplicar\n Mais perto quero estar\n Mais perto quero estar\n Meu Deus, de ti!\n\n 2\n Andando triste, aqui\n Na solidão,\n Paz e descanso a mim\n Teus braços dão;\n Nas trevas vou sonhar,\n Mais perto quero estar,\n Mais perto quero estar,\n Meu Deus, de ti!\n\n 3\nMinh’aima cantará a ti,\n Senhor! E em Betel alçará\n Padrão de amor,\n Eu sempre hei-de rogar\n Mais perto quero estar,\n Mais perto quero estar,\n Meu Deus, de ti!\n\n 4\n E, quando Cristo, enfim,\n Me vier chamar,\n Nos céus com serafins,\n Irei morar.\n Então me alegrarei\n Perto de ti, meu rei.\n Perto de ti, meu rei,\n Meus Deus, de ti!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 13 — BONDOSO AMIGO (200 H.P)
+     
+================================================== -->
+<script>
+const hino13 = {
+    numero: 13,
+    titulo: "BONDOSO AMIGO (200 H.P)",
+    letra: "1\nQuão, bondoso amigo é Cristo!\n Carregou co’a nossa dor,\n E nos manda que levemos\n Os cuidados ao senhor.\n Falta ao coração dorido\n Gozo, paz, consolação?\n Isso é porque não levamos\n Tudo a Deus em oração.\n\n 2\n Tu estás fraco e carregado\n De cuidados e temor?\n A Jesus, refúgio eterno,\n Vai com fé teu mal expor!\n Teus amigos te desprezam?\n Conta-lhe isso em oração,\n E com seu amor tão terno,\n Paz terás no coração.\n\n 3\n Cristo é verdadeiro amigo,\n Disto provas nos mostrou,\n Quando pra levar consigo\n O culpado encarnou.\n Derramou seu sangue puro\n Nossa mancha pra lavar;\n Gozo em vida e no futuro\n Nei’ podemos alcançar."
+};
+</script>
+
+<!-- ==================================================
+     HINO 14 — DIA FELIZ (201 H.P)
+     
+================================================== -->
+<script>
+const hino14 = {
+    numero: 14,
+    titulo: "DIA FELIZ (201 H.P)",
+    letra: "1\nOh! Dia alegre! Eu abracei\n Jesus, e nele salvação!\n O gozo deste coração\n Eu mais e mais publicarei\n\nCoro\n Dia feliz! Dia feliz!\n Quando em Jesus me satisfiz!\n Jesus me ensina a vigiar.\n E confiante nele, orar,\n Dia feliz! Dia feliz!\n Quando em Jesus me satisfiz!\n\n 2\n Completa a grande transação,\n Jesus é meu, eu do senhor!\n Chamou-me a voz do seu amor;\n Cedi à imensa atração.\n\n 3\n Descansa, ó alma! O salvador\n E teu sustento, o pão dos céus;\n E quem possui o eterno Deus,\n Resiste a todo o tentador.\n\n 4\n Meu sacro voto, Excelso Deus,\n De dia em dia afirmarei!\n E além da morte exultarei,\n Teu filho e súdito dos céus."
+};
+</script>
+
+<!-- ==================================================
+     HINO 15 — CREIO EU NA BÍBLIA (259 H.P)
+     
+================================================== -->
+<script>
+const hino15 = {
+    numero: 15,
+    titulo: "CREIO EU NA BÍBLIA (259 H.P)",
+    letra: "1\nCreio eu na bíblia, o livro do senhor,\n Pois de Jesus Cristo mostra o doce amor;\n Todos meus pecados apagados estão,\n Paz e gozo tenho em meu coração.\n\nCoro\n Creio eu na bíblia, o livro de meu Deus;\n Para mim a bíblia é o maná dos céus! \n Mostra-me o caminho para o lar celestial; \n Acho eu na bíblia, graça divinal!\n\n 2\n Creio eu na bíblia, ensina-me a cantar\n Cantos de vitória, e de amor sem par;\n Lindas melodias, eu cantando vou,\n Porque redimido pelo sangue estou!\n\n 3\n Só a santa bíblia a santidade dá,\n Este dom de Cristo, prometido já;\n Todos os que buscam plena salvação,\n Estas bênçãos, só em Cristo, acharão.\n\n 4\n Lemos hoje a bíblia p’ra todo pecador,\n Para que encontre Cristo, o Salvador;\n Sendo sua vida, livre de pecar,\n O divino livro, ele vai honrar!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 16 — SOU UM SOLDADO (418 H.P)
+     
+================================================== -->
+<script>
+const hino16 = {
+    numero: 16,
+    titulo: "SOU UM SOLDADO (418 H.P)",
+    letra: "1\nSou um soldado de Jesus\n E servo do senhor;\n Não temerei levar a cruz,\n Sofrendo grande dor.\n\nCoro\n Depois da batalha me coroará,\n Deus me coroará;\n Deus me coroará;\n Depois da batalha me coroará,\n Na celestial mansão;\n Lá verei o meu rei,\n E terei meu galardão,\n Depois de batalha me coroará,\n na cidade de Sião!\n\n 2\n Lutaram outros sem temor,\n Mui forte hei de ser;\n Pelejarei por meu senhor,\n Confiando em seu poder.\n\n 3\n Se eu for fiel ao meu Jesus\n E não voltar pra trás,\n Alcançarei no céu de luz,\n Lugar de santa paz."
+};
+</script>
+
+<!-- ==================================================
+     HINO 17 — BREVE VEREI O BOM JESUS (442 H.P)
+     
+================================================== -->
+<script>
+const hino17 = {
+    numero: 17,
+    titulo: "BREVE VEREI O BOM JESUS (442 H.P)",
+    letra: "1\nBreve no céu, Jesus há de aparecer\n Em gloriosa luz; todos o hão de ver\n Naquele dia, então, eu hei de receber\n De Cristo galardão; oh! Que prazer!\n\nCoro\n (1 & 2 VOICE)                       (3 & 4 VOICE)\n Breve verei…………Breve verei no  céu\n O bom Jesus…….…. O verdadeiro Deus\n E viverei……………....Sempre eu viverei\n Em plena luz………….Na luz do céu irei\n No lindo céu……..No eternal céu de luz\n Eu gozarei………… Eu gozarei com Jesus\n De toda dor; Por Deus; Livre serei; Sim lá no céu.\n\n 2\n Na vinda do senhor irei eu receber,\n Do seu eterno amor, repouso e prazer,\n Disso, meu bom Jesus, tem-me falado já\n E da celeste luz de Jeová!\n\n 3\n Na vinda do senhor desfrutarei prazer,\n Quando meu salvador em glória aparecer;\n Eis que ele breve vem, os santos levará\n Para a mansão de além, donde virá!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 18 — SOSSEGAI (328 C.C)
+     
+================================================== -->
+<script>
+const hino18 = {
+    numero: 18,
+    titulo: "SOSSEGAI (328 C.C)",
+    letra: "1\nÓ mestre o mar se revolta,\n As ondas nos dão pavor;\n O céu se reveste de trevas,\n Não temos um salvador!\n Não se te dá que morramos?\n Podes assim dormir,\n Se a cada momento nos vemos,\n Sim, prestes a submergir?\n\nCoro\n As ondas atendem\n Ao meu mandar: Sossegai!\n Seja o encapelado mar,\n A ira dos homens, o génio do mal,\n Tais águas não podem a nau tragar,\n Que leva o senhor, Rei do céu e mar,\n Pois todos ouvem o seu mandar:\n Sossegai! Sossegai!\n Convosco estou para vos salvar;\n sim, sossegai!\n \n 2\n Mestre, na minha tristeza\n Estou quase a sucumbir:\n A dor que perturba minha alma,\n Oh! Peço-te, vem banir!\n De ondas do mal que me encobrem,\n Quem me fará sair?\n Pereço, sem ti, oh! Meu Mestre!\n Vem logo, vem me acudir!\n \n 3\n Mestre, chegou a bonança,\n Em paz eis o céu e o mar!\n O meu coração goza calma\n Que não poderá findar.\n Fica comigo, oh! Meu Mestre,\n Dono da terra e céu,\n E assim chegarei bem seguro\n Ao porto, destino meu."
+};
+</script>
+
+<!-- ==================================================
+     HINO 19 — SEGURO VERDADEIRO (324 C.C)
+     
+================================================== -->
+<script>
+const hino19 = {
+    numero: 19,
+    titulo: "SEGURO VERDADEIRO (324 C.C)",
+    letra: "1\nSeguro estou, não tenho temor do mal;\n Sim, guardado pela fé em meu Jesus,\n Não posso duvidar desse amor leal;\n Ele em seu caminho sempre me conduz.\n Não me deixará mas me abrigará,\n Do pecado vil me vem livrar.\n A sua graça não me recusará;\n Sim, Jesus é quem me pode sustentar.\n\nCoro\n No poder de Cristo, o mestre, meu senhor\n Minha vida salva está!\n Do perigo que cercá-la ele poderá livrá-la; \n Seu poder eterno sempre a susterá.\n\n 2\n Abrigo eterno tenho no salvador;\n Ele esconde a minha vida em seu poder;\n Eu recear não posso do malfeitor\n Que procura pertinaz me enfraquecer. \n Confiado, então, nessa proteção,\n Sigo a Cristo e quero ser fiel\n Na minha vida, cheio de gratidão;\n Sim, a meu senhor e rei Emanuel.\n\n 3\n Perigo algum me pode causar temor,\n Pois meu salvador não me abandonará;\n Com sua proteção e com seu amor,\n Dirigindo minha vida ele estará.\n Nunca o deixarei, mas fiel serei,\n Sempre firme, cheio de fervor;\n A Cristo, redentor, meu senhor e rei,\n Eu me entregarei, firmando em seu amor."
+};
+</script>
+
+<!-- ==================================================
+     HINO 20 — MEU DEUS PROVERÁ (346 C.C)
+     
+================================================== -->
+<script>
+const hino20 = {
+    numero: 20,
+    titulo: "MEU DEUS PROVERÁ (346 C.C)",
+    letra: "1\nNa forte aflição, nos perigos e dor,\n Na vil traição e no negro terror,\n Com toda a certeza vitória virá;\n É firme a promessa: “Meu Deus proverá,”\n “Meu Deus proverá, Meu Deus proverá.”\n É firme a promessa: “Meu Deus proverá.”\n\n 2\n Às aves do céu dá sustento o bom Deus,\n E com mais prazer ele cuida dos seus,\n Pois, nada de bom aos fiéis faltará;\n Que grande verdade: “Meu Deus proverá,\n Meu Deus proverá, Meu Deus proverá.”\n Que grande verdade: “Meu Deus proverá.”\n \n 3\n Se vem Satanás e nos quer assustar\n Com medo falaz para a fé nos tirar,\n Não pode; que é nossa e pra sempre será\n A rica promessa: “Meu Deus proverá,\n Meu Deus proverá, Meu Deus proverá.”\n A rica promessa: “Meu Deus proverá.”\n \n 4\n A nossa virtude ele pode aumentar;\n Jesus nos ajuda a vitória a ganhar;\n Do vil inimigo nos esconderá;\n Com grande largueza: “Meu Deus proverá, \n Meu Deus proverá, Meu Deus proverá.”\n Com grande largueza: Meu Deus proverá.\n \n 5\n Na hora final, quando a morte chegar,\n A voz do senhor só nos há de alegrar;\n E mesmo na morte eu hei de cantar\n Com plena certeza: “Meu Deus proverá,\n Meu Deus proverá, Meu Deus proverá.”\n Com plena certeza: “Meu Deus proverá.”"
+};
+</script>
+
+<!-- ==================================================
+     HINO 21 — BENDITOS LAÇOS (379 C.C)
+     
+================================================== -->
+<script>
+const hino21 = {
+    numero: 21,
+    titulo: "BENDITOS LAÇOS (379 C.C)",
+    letra: "1\nBenditos laços são\n Os do fraterno amor,\n Que nesta santa comunhão\n Nos unem ao senhor.\n\n 2\n As nossas petições\n Jesus atenderá \n Em nossas lutas e as aflições\n Jesus nos guiará.\n\n 3\n Aqui tudo é comum,\n Se temos de sofrer;\n Em Cristo somos todos um\n Felizes no viver.\n\n 4\n Qualquer separação\n Sentimos com pesar,\n Porém no céu em comunhão\n Iremos nós morar."
+};
+</script>
+
+<!-- ==================================================
+     HINO 22 — AMOR (380 C.C)
+     
+================================================== -->
+<script>
+const hino22 = {
+    numero: 22,
+    titulo: "AMOR (380 C.C)",
+    letra: "1\nQual o adorno desta vida? É o amor.\n Alegria é concedida pelo amor.\n É benigno, é paciente,\n Não se torna maldizente este meigo amor.\n\n 2\n Com suspeitas não se alcança doce amor.\n Onde houver desconfiança, ai do amor.\n Pois mostremos tolerância;\n Muitas vezes a arrogância murcha e mata o amor.\n\n 3\n Inda quando for custoso, nutre amor,\n Ao irado e mui furioso mostra amor.\n Não te dês por insultado,\n Mas responde com agrado, vence pelo amor.\n\n 4\n Não te irrites, mas tolera com amor.\n Tudo sofre, tudo espera pelo amor. Desavenças e rancores\n Não convém a pecadores salvos pelo amor.\n\n5\nIrmã __________ ao teu marido mostra amor\nIrmão _________a sua esposa mostra amor \nComo Cristo amou a igreja, \n Amarás a sua esposa \n Para sempre amém"
+};
+</script>
+
+<!-- ==================================================
+     HINO 23 — SOU FELIZ (398 C.C)
+     
+================================================== -->
+<script>
+const hino23 = {
+    numero: 23,
+    titulo: "SOU FELIZ (398 C.C)",
+    letra: "1\nSe paz a mais doce me\n Deres gozar, se dor a\n Mais forte sofrer,\n Oh! Seja o que for,\n Tu me fazes saber\n Que feliz com Jesus\n Sempre sou!\n\nCoro\n Sou feliz com Jesus!\n Sou feliz com Jesus,\n Meu senhor!\n\n 2\n Embora me assalte\n O cruel Satanás,\n E ataque com vis\n Tentações;\n Oh! Certo eu estou,\n Apesar de aflições,\n Que feliz eu serei\n Com Jesus.\n\n 3\n Meu triste pecado,\n Por meu salvador,\n Foi pago de um modo\n Cabal;\n Valeu-me o senhor,\n Oh! Mercê sem igual!\n Sou feliz! Graças dou\n A Jesus!\n\n 4\n A vinda eu anseio\n Do meu salvador;\n Em breve virá me levar\n Ao céu, onde vou para\n Sempre morar\n Com remidos na luz\n Do senhor!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 24 — ACORDAI (414 C.C)
+     
+================================================== -->
+<script>
+const hino24 = {
+    numero: 24,
+    titulo: "ACORDAI (414 C.C)",
+    letra: "1\n Eis que vamos para aquele bom país,\n Onde o crente, sim, é Cristo quem o diz,\n Com seu salvador pra sempre ali feliz,\n Vai gozar e descansar.\n Trabalhemos, pois, com zelo e com vigor, \n Constrangidos pelo seu imenso amor; \nTrabalhemos pelo nosso salvador:\n Eis que a vida vai findar!\n\nCoro\n Acordai! Acordai!\n Despertai! Despertai!\n E cantai! Sim, cantai! O senhor não tardará.\n Eis que vamos para aquele bom país, \n Onde o crente, sim, é Cristo quem o diz,\n Com seu salvador, p’ra sempre ali feliz,\n Vai gozar e descansar.\n\n 2\n Eis connosco nosso insigne capitão,\n Que nos assegura eterna salvação!\n Eis da santa fé, o invicto pavilhão!\n Vamos, vamos trabalhar!\n Eis avante! Nada temos que temer;\n Por Jesus, havemos sempre de vencer, \n Trabalhemos juntos sem desfalecer\n Para a obra completar!\n\n 3\n Revestidos da couraça de Jesus,\n Como servos seus e filhos, sim, da luz, \n Gloriando-nos em Cristo e sua cruz!\n Vamos, vamos, trabalhar!\n Os perdidos, vamos com amor buscar,\n Aos desesperados, vamos declarar\n Que Jesus deseja os homens transformar!\n Oh! Sim, vamos trabalhar!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 25 — JUVENTUDE (550 C.C)
+     
+================================================== -->
+<script>
+const hino25 = {
+    numero: 25,
+    titulo: "JUVENTUDE (550 C.C)",
+    letra: "1\nLevantai-vos, jovens crentes,\n Para anunciar Jesus\n Como salvador do mundo,\n Verdadeiro guia e luz.\n\nCoro\n Despertai-vos!\n Levantai-vos!\n Não há tempo que perder.\n Se quereis servir a Cristo,\n Tendes muito que fazer.\n Meditai no seu amor,\n Meditai no que ele fez:\n Pela morte no calvário\n Resgatou-nos de uma vez!\n\n 2\n Sim, ele é “a luz do mundo”!\n Ele poderá dizer:\n “Só eu dou a vida eterna\n A qualquer que queira crer.”\n\n 3\n Pois se nós estamos certos\n De que Cristo é salvador,\n Vamos publicá-lo a todos\n Com coragem e fervor.\n\n 4\n E se nós, sinceramente,\n Já servimos nosso Deus,\n Exultamos na certeza\n De encontrá-lo lá nos céus."
+};
+</script>
+
+<!-- ==================================================
+     HINO 26 — GLÓRIA A JESUS (23 H.P)
+     
+================================================== -->
+<script>
+const hino26 = {
+    numero: 26,
+    titulo: "GLÓRIA A JESUS (23 H.P)",
+    letra: "1\nCantam os santos com fervor,\n A quem por mim foi imolado,\n Na cruz, sofrendo o meu pecado.\n\nCoro\n Glória a Jesus!\n Glória a Jesus!\n Glória a Jesus, o salvador!\n\n 2\n Deus é o justificador\n De quem crer no seu enviado\n Sim, no seu filho mui amado.\n\n 3\n Do seu pai recebeu louvor,\n E com poder foi exaltado,\n por isso é glorificado.\n\n 4\n Do “sangue purificador”,\n Eu quero sempre ter lembrança,\n E nele ter mais confiança.\n\n 5\n Por nós, na cruz, sofreu a dor,\n Com sangue fomos nós comprados,\n E do pecado resgatados."
+};
+</script>
+
+<!-- ==================================================
+     HINO 27 — UM PENDÃO REAL (46 H.P)
+     
+================================================== -->
+<script>
+const hino27 = {
+    numero: 27,
+    titulo: "UM PENDÃO REAL (46 H.P)",
+    letra: "1\nUm pendão real vos entregou o rei\n A vós, soldados seus;\n Corajosos, pois, em tudo o defendei, \n marchando para os céus.\n\nCoro\n Com valor! Sem temor!\n Por Cristo prontos a sofrer!\n Bem alto erguei o seu pendão,\n Firmes sempre, até morrer!\n\n 2\n Eis formados já os densos batalhões\n Do grande usurpador!\n Declarei-vos, hoje, bravos campeões;\n Avante sem temor.\n\n 3\n Quem receio sente no seu coração,\n E fraco se mostrar,\n Não receberá o eterno galardão,\n Que Cristo tem pra dar.\n\n 4\n Pois sejamos, todos, a Jesus leais,\n E a seu real pendão;\n Os que na batalha sempre são fiéis,\n Com ele reinarão."
+};
+</script>
+
+<!-- ==================================================
+     HINO 28 — EXALTAI O SANTO NOME
+     
+================================================== -->
+<script>
+const hino28 = {
+    numero: 28,
+    titulo: "EXALTAI O SANTO NOME",
+    letra: "1\nO nome do senhor há de ser exaltado\n A majestade revelou.\n O nome do senhor há de ser exaltado \n Mercê ele dispensou\n Oh! Povo com gozo proclamai\n E glória lhe outorgai\n Exaltai o santo nome.\n\nCoro\n S.C.T- Exaltai o santo nome (3x).\n B - O santo nome exaltai (3x).\n\n 2\n A força do senhor há de ser exaltado\n Poder supremo quis mostrar\n A força do senhor há de ser exaltado nações Ele quis salvar\n Aceitar Cristo salvador e rei seu nome bendizei.\n\n 3\n O reino do senhor há de ser exaltado \n Seu Grande amor não falhará.\n O reino do senhor há de ser exaltado\n Pois tudo ele vencerá\n Forcejai por viver em rectidão\n E gozares perdão."
+};
+</script>
+
+<!-- ==================================================
+     HINO 29 — CRÊ NO SENHOR
+     
+================================================== -->
+<script>
+const hino29 = {
+    numero: 29,
+    titulo: "CRÊ NO SENHOR",
+    letra: "1\nCrê já somente no Senhor\n E mais feliz serás\n Confia só em seu poder\n E a paz encontrarás\n\nCoro\n Crê, logo… No senhor e mais feliz serás\n Somente no Senhor e mais feliz serás\n Confia só em seu poder\n E a paz encontrarás\n Salvação, pois, tu terás\n Sim, crendo em teu Jesus\n Sim, salvação terás, pois, crendo no Senhor\n Imensamente pois serás\n Feliz, gozando a eterna luz\n\n 2\n Aos seus queridos é leal\n Jesus, o benfeitor\n Guardá-los bem de todo mal\n Procura o redentor\n\n 3\n Quando o fragor do temporal\n Te abala com pavor\n Confia em seu poder real\n Contigo está o Senhor\n\n 4\n Quando o caminho te conduz\n A tão amarga cruz\n Espera só no bom Jesus\n E chegarás a luz"
+};
+</script>
+
+<!-- ==================================================
+     HINO 30 — BUSCA A DEUS
+     
+================================================== -->
+<script>
+const hino30 = {
+    numero: 30,
+    titulo: "BUSCA A DEUS",
+    letra: "1\nNossa vida acabará, como folhas cairão\n Qual raíz se arrancará, Busca a Deus\n Vou a cada dia veloz, escutando a sua voz \n Vem dar tua conta a Deus, Busca a Deus.\n\nCoro\n Busca a Deus\n Busca a Deus\n Oh! enquanto resta tempo busca a Deus\n Se te atreves a esperar Deus a porta fechará\n E dirás é tarde já\n Busca a Deus!\n\n 2\n Perde o homem seu vigor e se murchará qual flor\n Se dissipa qual vapor, busca a Deus.\n Como rio a deslizar, \n Vai morrer no vasto mar \n Tua alma vai passar, Busca a Deus.\n\n 3\n Clama a Deus de coração, com sincera contrição\n Por Jesus Deus dá perdão, Busca a Deus.\n Se não ouves ao Senhor, se desprezas seu perdão\n Cairás na perdição, Busca a Deus."
+};
+</script>
+
+<!-- ==================================================
+     HINO 31 — NZAMBI I MFUMU ANZA YAYO
+     
+================================================== -->
+<script>
+const hino31 = {
+    numero: 31,
+    titulo: "NZAMBI I MFUMU ANZA YAYO",
+    letra: "1\nNzambi i mfumu anza yayo,\n Zeyi mabanza mamonsono\n Muntu kalendi kumvioka ko\n Lutidi babo.\n\nCoro\n Tonda mvulusi,\n Tonda mvulusi,\n Nzeyi vo ngueye i mvulusi,\n Tonda mvulusi.\n\n 2\n Ntangu mu kwiza kwa mvulusi,\n Yandi i ntanini ababo;\n Menga katengula vana nti,\n Lwiza vuluswa.\n\n 3\n Bika tuakwikama mu mamo,\n Mfingulo nsevolo, nkwamusu\n Mfumu watuama mu yamuswa,\n Yandi landanga.\n\n 4\n Mu kika yesu tuakubama\n Bu kana vutuka vava nza,\n Landa bavinguila nguizulu,\n Fundisa bambi."
+};
+</script>
+
+<!-- ==================================================
+     HINO 32 — TODOS FALAM DO PERIGO (372 H.A)
+     
+================================================== -->
+<script>
+const hino32 = {
+    numero: 32,
+    titulo: "TODOS FALAM DO PERIGO (372 H.A)",
+    letra: "1\nTodos falam dos perigos\n Do caminho em que eu estou,\n Mas não vêem a luz que brilha\n Ao redor por onde vou\n\nCoro\n Meu Jesus me guia os passos,\n Pois já veio em mim morar,\n Neste mundo perigoso,\n Só por mim não posso andar.\n\n 2\n Falam só de muito engano\n E de dura provação;\n Mas Jesus me ampara sempre\n E me dá consolação.\n\n 3\n Sei que meu amor é fraco,\n Sou propenso a pecar,\n Mas, com seu divino auxílio,\n Hei de sempre triunfar."
+};
+</script>
+
+<!-- ==================================================
+     HINO 33 — MFUMU ETO NZAMBE ETO
+     
+================================================== -->
+<script>
+const hino33 = {
+    numero: 33,
+    titulo: "MFUMU ETO NZAMBE ETO",
+    letra: "1\nNgueye Yesu Yi Mfumu eto\n Vuvu kieto moyo eto\n Ngueye Yi Tukembelela\n Kunga wo mpe wa Nzitusu\n Mfumu Eto Nzambe Eto\n\nCoro\n 4ªvoice – o mfumu\n Todos – Se tutomi yimbidila ngueye\n Yesu wa tu vulusua\n Beto mpe tu nzolele\n Ye tua nunga mpe kusulu dia se\n\n 2\n Tala kaka yeto mfumu\n Ngue se dieto tu fiete\n Zevo muna mpukumuni\n Ketulendi sumbulua ko\n Mfumu eto nzambe eto\n\n 3\n Tala kaka yeto mfumu\n Nguese dieto tu fiete\n Zevo muna nzila e zulu\n Singama tu singama\n Mfumu eto nzambi eto\n\n 4\n Tala kaka yeto mfumu\n Ngue se dieto tu fiete\n Zevo kiese kieto kiaki\n Nsi kiakala vu ya vu\n Mfumu eto nzambe eto"
+};
+</script>
+
+<!-- ==================================================
+     HINO 34 — NZOLELE KUZITISA
+     
+================================================== -->
+<script>
+const hino34 = {
+    numero: 34,
+    titulo: "NZOLELE KUZITISA",
+    letra: "1\nMoyo Ami Ntudidi\n Nkailu Vana Zikwa Dio\n Moko Mami Nikusa\n Tumisa Mu Zola Mpe\n\n 2\n Malu Mami Ngiekudi\n Mana Kwenda Nzaki Mpe\n Mbembo Yina Yimbila\n Ntinu Ami Zitisa\n Mambu Mandi Samuna\n\n 3\n Didi Biama Weseti\n Mambu Maku Vovisa\n Mbongo Zami Mvuilu Mpe\n Nzolele Bio Yekula\n Bina Sadulwa Kwa Nge\n\n 4\n Ntangu Ami Ngiekudi\n Sadileti Yayonso\n Dieladiami Mpeni Dio\n Biela Mpe Mu Bioka Nlongo\n Mueve Mwela Ye Situ Mpe\n\n 5\n Zola Kwami Kwakonso\n Nzolele Ku Vana Ko\n Mu Luzolo Luaku Se\n Ngiekudi Biabionsono\n Mfumu Yadileti Bio… Amém"
+};
+</script>
+
+<!-- ==================================================
+     HINO 35 — ENGUE TATA TITO
+     
+================================================== -->
+<script>
+const hino35 = {
+    numero: 35,
+    titulo: "ENGUE TATA TITO",
+    letra: "1\nENGUE TATA TITO TOMA SIMBIZINA\n SALO KIO WUA TAMBULA NATE NKUSSUKULO\n KADI TATA NZAMBI WUA KUSSAKUMUNA \n TUKA LUMBO WUA TAMBULA SALU KIO\n SIMBANGA MAMEME MOMO WUA TAMBULA\n VANANGA MADIA NPASSI BA VULUZUA\n YE BABAKA MOYO WUA NVU WUA NVU\n\nCoro\n ENGUE TATA TITO TOMA SIMBIZINA SALU KIO \n WUA TAMBULA NATEYE KUNSSUKULO\n TALA SEMDO WUAKU\n SIWA TAMBULA BICA NZAMBI AKALA YAKU TANGO ZAZO\n\n 2\n KIESSE NKIENA YETO MU MAMBO MA NZAMBI\n WETI SAMUNANGA MBUNDO DIA NPUNGO\n NSAMU WUO WUA MBOTE YE WUA LENBAMI\n NSAMU WUA MBOTE WUA WUIZA OVA\n\n 3\n NGUEYE KUA DIBUNDO HOO WUANGA E MALONGUI \n WETI  SAMUNUANGA MU DICABO DIA YESSO VAICA \n MU NZILA ZI KONDOLO NSONGA WUIZA KUA YESU YANDI NVULUSI"
+};
+</script>
+
+<!-- ==================================================
+     HINO 36 — AVANTE JIEA
+     
+================================================== -->
+<script>
+const hino36 = {
+    numero: 36,
+    titulo: "AVANTE JIEA",
+    letra: "1\nNa JIEA fundamento em Cristo\n Nele descansa em forte seu amor\n Em Cristo edificada bem firme ficará\n Pois sobre a rocha jamais se abalará\n\nCoro\n 1 voice – Avante 4x\n 2,3 e 4 voice: Avante JIEA 4x\n All: o senhor é a rocha eterna\n Avante JIEA\n\n 2\n Na JIEA o dinheiro é importante\n Mas a salvação é o alvo da JIEA\n Templos são erguidos pra deus render louvor\n Pois o espírito santo é que a faz marchar"
+};
+</script>
+
+<!-- ==================================================
+     HINO 37 — NKUNGA MU YIKULUA
+     
+================================================== -->
+<script>
+const hino37 = {
+    numero: 37,
+    titulo: "NKUNGA MU YIKULUA",
+    letra: "1\nNkunga Mu Yikulua Kwa Zitusuandi\n Yandi Wa\n Vanga Zulu Ye Ntonto –\n Mu Fuale – Kwa Yandi Kaka\n Mu Ntango Zazo –\n Nza Yayo Imbilanga\n Nkunga Mu Ntango Zazo Tu Zitissa\n Nkembo, Nkembo, Nkembo\n Kwa Nvulussi\n\n 2\n Mbassi Mu Zulo Zizitissangase\n Vangui A\n Biabiossono Vava –\n Tua Yimbila – Nkembo Kwa Se\n Kwa Yesu Klisto\n Yengue Va\n Vana Mu Mi Ntima\n Ye Moyo Wa Nvu Ya Nvu Ya Nvu\n Nkembo, Nkembo, Nkembo\n Kwa Nvulussi\n\n 3\n Zola Kwa Nzambi Kwa Mono Kussua Mpe\n Yandi Wa\n Vana Yesu Klisto\n Wa Tu Fuila – Va Kulussi Mpassi Tua Nunga\n Nkembo Kwa Nzambi, Yesu Klisto\n Ye Mpeve A Longo, Tu Zitissa\n Nkembo, Nkembo, Nkembo\n Kwa Nvulussi"
+};
+</script>
+
+<!-- ==================================================
+     HINO 38 — A SAMUEL
+     
+================================================== -->
+<script>
+const hino38 = {
+    numero: 38,
+    titulo: "A SAMUEL",
+    letra: "1\nA Samuel Deus falou palavras de favor \n Oh quanto se admirou ouvindo o Criador\n que ditasse Jesus assim 2x \n que digna se ensinar a mim.\n\n 2\n Não poderia estar com falta de atenção \n com medo de pecar de língua ou coração \n mas sempre havia de exultar 2x \n ouvindo o grande Rei falar.\n\n 3\n Pois na divina lei eu ouço a voz de Deus \n e santo eterno Rei falando-me dos céus \n com reverente amor convém 2x \n saber o que essa lei contém.\n\n 4\n Eu quero humilde ouvir sua rica instrução\n e o bom Jesus servir de todo coração seu \n servo infante mais fiel 2x \n como o menino Samuel.\n\n 5\n Sim Deus agora está tão perto e tão real \n oh quão feliz será como alma \n filial dizer-lhe hino de louvor 2x \n fala teu servo ouve Senhor"
+};
+</script>
+
+<!-- ==================================================
+     HINO 39 — AS THE DEER
+     
+================================================== -->
+<script>
+const hino39 = {
+    numero: 39,
+    titulo: "AS THE DEER",
+    letra: "1\nAs the deer panteth for the water\n So my soul longeth after thee\n You alone are my hearts desire\n And I long to worship thee\n\nChorus\n You alone are my strength my shield\n To You alone may my spirit yield\n You alone are my hearts desire\n And I long to worship thee\n\n 2\n Youˈre my friend and You are my brother,\n Even though you are a king\n I love you more thank any other,\n So much more than anything\n\n 3\n I want you more than gold or silver,\n Only you can satisfy.\n You alone are the real joy giver,\n And the Apple of my eye."
+};
+</script>
+
+<!-- ==================================================
+     HINO 40 — SOBRE OS CAMPOS DE BELÉM
+     
+================================================== -->
+<script>
+const hino40 = {
+    numero: 40,
+    titulo: "SOBRE OS CAMPOS DE BELÉM",
+    letra: "1\nSobre os campos de Belém\n Descem anjos a cantar\n Do senhor os homens vem\n Boas novas proclamar.\n\nCoro\n Glória in excelsis deo 2x\n\n 2\n Gloria Deus na terra paz\n Eis canto divinal\n Hoje Cristo aos homens traz\n Luz amor e vida eternal.\n\n 3\n Todos pastores vão\n Visitar o novo rei\n Tributar-lhe adoração\n Como sua humilde grei.\n\n 4\n Vinde a gruta contemplai\n O menino redentor\n De joelho lhe prostrai\n Honra glória e louvor"
+};
+</script>
+
+<!-- ==================================================
+     HINO 41 — PARA OS ALTOS MONTES (N.C 139)
+     
+================================================== -->
+<script>
+const hino41 = {
+    numero: 41,
+    titulo: "PARA OS ALTOS MONTES (N.C 139)",
+    letra: "1\nPara os altos montes olharei\n Donde vem a salvação (2x)\n Do meu divino protector\n Virá consolação (4x)\n\n 2\n No braço forte esperarei\n Do meu amparador (2x)\n Por ela a terra feita está\n Do céus e o senhor (4x)\n\n 3\n O pé dos servos de Jesus\n Nem sempre tremerá (2x)\n Aquele que guarda Israel\n Não há adormecerá (4x)\n\n 4\n Do crente a mão direita está\n Que o protege bem (2x)\n Nem sol nem lua o ferirá\n Desastre não lhe vê (4x)\n\n 5\n Os inimigos dos fiéis\n Os querem assustar (2x)\n O protegido por Jesus\n Sem medo deve andar (4x)"
+};
+</script>
+
+<!-- ==================================================
+     HINO 42 — SENHOR MANDA TEU PODER
+     
+================================================== -->
+<script>
+const hino42 = {
+    numero: 42,
+    titulo: "SENHOR MANDA TEU PODER",
+    letra: "1\nOs fiéis oravam unidos\n Num cenáculo ao senhor\n Quando foi do céu descido\n O real consolador\n\nCoro\n Senhor manda já teu poder (3x)\n E baptiza cada um.\n\n 2\n Qual um vento veemente\n O poder à casa encheu\n Línguas vieram sobre os crentes\n Mas do fogo lá do céu\n\n 3\n Noutras línguas sim falaram\n Como Cristo concedeu\n Do espírito transbordaram\n Exaltando o rei do céu\n\n 4\n O poder foi prometido\n Para os servos do senhor\n E pra todos concedidos\n Se o pedirem com fervor"
+};
+</script>
+
+<!-- ==================================================
+     HINO 43 — UM SÓ REBANHO
+     
+================================================== -->
+<script>
+const hino43 = {
+    numero: 43,
+    titulo: "UM SÓ REBANHO",
+    letra: "1\nUm só rebanho, um só pastor\n Uma só fé, em um só salvador\n Em teu amor, unidos aqui\n Num mesmo espírito vamos a ti 2x\n\n 2\n Um só rebanho, um só pastor\n Fruto senhor, desse teu grande amor\n Só nos gloriamos, na tua cruz\n Sê tu louvado bendito Jesus 2x\n\n 3\n Um só rebanho, um só pastor\n Ó Cristo és digno, do nosso louvor\n Tu és o imã, que nos atrai\n E só por ti adoramos o pai 2x\n\n 4\n Um só rebanho, um só pastor\n Nós esperamos, por ti ó senhor\n É face a face, que vamos ver\n Quem nos amou e por nós quis morrer 2x"
+};
+</script>
+
+<!-- ==================================================
+     HINO 44 — ZITISA NZAMBI
+     
+================================================== -->
+<script>
+const hino44 = {
+    numero: 44,
+    titulo: "ZITISA NZAMBI",
+    letra: "1\n\n Zitisa Nzambi, Nzambi i eto\n Nsemi a lekwa biabio vanza (3ªvoz vanza) \n Yandi wa vanga zulu ye ntoto\n Inga wa vanga bantu babo\n\nCoro\n Todos: Tubabo sanisina dise\n 1,2,4ª voz diatu vana\n 3ª voz nvulusi\n Todos: aleluia\n ½ªvoz sanisina dise, dia tuvana yesu\n ¾ªvoz sani dise dia tuvana yesu\n 1,2,4 voz Klisto nvulusi\n 3ª voz eto\n Todos: aleluia\n\n 2\n Yandi i Mfumu, Mfumu wa moyo\n Ukutu monanga ntangu zazo (3ªv zazo)\n Yandi ulenda, sadisa bantu\n Bamona nsantu ya mpulusu\n\n 3\n Se dia tuvana, mpeve ya nlongo\n Ye yengue kiandi va tonto wawo (3ªv wawo) \n ye watuvana, nvulusi yesu\n Yandi waluta nkailu miamo.\n\n 4\n Bika tuenda, mu nza ya nvimba\n Mu kamba nsamu kwa bantu babo (3ªv babo)\n Buna babingui, bana vulusua\n Ye bana vewa zulu dia se"
+};
+</script>
+
+<!-- ==================================================
+     HINO 45 — MAMBU MA NZAMBI
+     
+================================================== -->
+<script>
+const hino45 = {
+    numero: 45,
+    titulo: "MAMBU MA NZAMBI",
+    letra: "1\nMambu ma Nzambi mena moyo\n Mambu ma Nzambi mena lulendo\n Kiese 2x\n\nCoro\n Aleluia 3x\n Uuuuuuh\n Kiese 2x\n\n 2\n Mambu ma Nzambi me salanga \n Mambu ma Nzambi me sekulanga Kiese 2x\n\n 3\n Mambu ma Nzambi ndungunu ami \n Mambu ma Nzambi suamino kiame Kiese 2x"
+};
+</script>
+
+<!-- ==================================================
+     HINO 46 — LUZITISA YESU KLISTO
+     
+================================================== -->
+<script>
+const hino46 = {
+    numero: 46,
+    titulo: "LUZITISA YESU KLISTO",
+    letra: "1\nLuzitisa Yesu Klisto\n Dimeme Dia Nzambi\n Yandi I Mvulusi Eto\n Lusika Mfumu A Nza\n\n 2\n Zinsi Zazo Bantu Babo\n Lusadila Yesu\n Luvana Ntima Mieno\n Lunsika Mfumu A Nza\n\n 3\n Luzitisa Luzitisa\n Beno Luavuluswa\n U Mfumu Eno Lunyadisa\n Lusika Mfumu A Nza\n\n 4\n Mu Zulu Ntidi Kadila\n Ye Bau Bafungusua\n Ye Sadila Ye Zitisa\n Yesu I Mfumu A Nza"
+};
+</script>
+
+<!-- ==================================================
+     HINO 47 — SAUDAI O NOME DE JESUS
+     
+================================================== -->
+<script>
+const hino47 = {
+    numero: 47,
+    titulo: "SAUDAI O NOME DE JESUS",
+    letra: "1\nSaudai o nome de Jesus!\n Arcanjos, vos prostrai;\n Arcanjos, vos prostrai;\n O filho do glorioso Deus\n\nCoro\n Com glória, glória, \n Glória, glória\n Com glória, coroai!\n\n 2\n Oh escolhida geração\n Do bom eterno Pai\n Do bom eterno Pai\n O grande autor da salvação\n\n 3\n Oh perdoados, cujo amor\n Bem triunfante vai\n Bem triunfante vai\n Ao Deus Varão, conquistador\n\n 4\n Oh raças, tribos e nações\n Ao Rei divino honrai!\n Ao Rei divino honrai!\n A quem quebrou os vis grilhões"
+};
+</script>
+
+<!-- ==================================================
+     HINO 48 — SANTA ALEGRIA
+     
+================================================== -->
+<script>
+const hino48 = {
+    numero: 48,
+    titulo: "SANTA ALEGRIA",
+    letra: "1\nSempre alegre nós sejamos,\n Pois andamos em Jesus,\n Nele temos confiança,\n Esperança em sua cruz\n\nCoro\n Santa alegria traz\n Do bom Jesus a paz\n Santo prazer produz\n Seu amor e luz\n Sempre alegre nós sejamos\n Pois andamos em Jesus 2x\n\n 2\n Coração humilde e bramo,\n Imitando o salvador\n Seja o nosso no gozarmos,\n Desfrutamos seu amor.\n\n 3\n Trabalhemos resolutos,\n Pois os frutos são de Deus;\n Entre sombras rebrilhe mos\n Caminhemos para os céus\n\n 4\n Em chegando ao lar amado,\n Tendo andado em sua luz,\n Para sempre gozaremos,\n Reinaremos com Jesus."
+};
+</script>
+
+<!-- ==================================================
+     HINO 49 — ABENÇOA
+     
+================================================== -->
+<script>
+const hino49 = {
+    numero: 49,
+    titulo: "ABENÇOA",
+    letra: "1\nA bênção oh Deus de amor\n Este coro com favor\n Aos coristas dá oh Deus\n Tua protecção nos céus\n\n Vem ao coro defender\n Da miséria do sofrer\n Pela porta faz entrar\n Alegria amor e paz\n\n 2\n Ilumina interior\n Com seu divinal fulgor\n E que cada coração\n Busca a tua direcção\n\n Livra-nos de todo mal\n Desta vida terreal\n E preparamos oh Deus\n Para o eterno lar dos céus\n\n 3\n Exaltemos ao senhor\n Entoando em alta voz\n Honra e glória a senhor\n Damos todos com fervor\n\n Pelas bênçãos que nos deu\n Vindem todos adorar\n Ao grandioso Deus de amor\n Para todo sempre amém"
+};
+</script>
+
+<!-- ==================================================
+     HINO 50 — NANI BEDISANGA NZA
+     
+================================================== -->
+<script>
+const hino50 = {
+    numero: 50,
+    titulo: "NANI BEDISANGA NZA",
+    letra: "1\nNani bedisanga nza vo ka wena minu ko\n Mu malongilanga mfumu yesu\n Mimu kina lunguswa mumavanga meto, \n ye buna kina monika vo i minu\n\nCoro\n Minu kieto, minu kieto\n Kina katukotisa mu divata dia dise\n Minu kieto, minu kieto\n Kina katukotisa mu dizulu\n\n 2\n Ye vo ngeye lekele minu muna mvulusi! \n Minu monikisa mu mavanga!\n Vo mavanga kondolo, buna minu meni fwa. \n Songa kwaku minu mpe mu mavanga.\n\n 3\n Yonso-yonso yayibi tueti monanga va nsi \n tuna kweto songa minu kieto.\n Vo mayangui mena vo nzungu ye\n zimpasi mpe, mfumu yesu zolele kala yeto,\n\n 4\n Yesu mfumu eto sa toma kutusadisa \n mu tusindula ye zimpasi!\n Lekwa bingi bieninina mwamu nza\n Bikondonga\n Bieti kutuzezisa minu kieto"
+};
+</script>
+
+<!-- ==================================================
+     HINO 51 — NUM BERÇO DE PALHA
+     
+================================================== -->
+<script>
+const hino51 = {
+    numero: 51,
+    titulo: "NUM BERÇO DE PALHA",
+    letra: "1\nNum berço de palha em Belém\n Sim nasceu Jesus o príncipe da paz\n Salvador do mundo, e Rei dos Reis\n Cristo o Salvador!\n Cristo o Redentor!\n\nCoro\n Jesus Senhor……. O salvador\n Jesus Senhor……. O redentor\n Pai da eternidade e conselheiro príncipe\n Da paz e Rei dos Reis\n Glória nas alturas\n Paz entre os homens\n\n 2\n Numa noite fria e de paz\n Os pastores guardavam o seu rebanho\n Um anjo os cercou anunciando\n Nasceu Salvador\n Nasceu o Redentor.\n\n 3\n Estrela no oriente apareceu,\n Dirigindo os magos a Belém\n E ouvindo Herodes estremeceu\n Jesus é o Rei dos Reis\n Jesus é o Senhor\n\n 4\n Oh! Jesus senhor habite em nós\n Nossos corações abertos estão\n Aceitai pois sim o nosso ser\n Vem sim, oh Salvador\n Vem sim, oh Redentor"
+};
+</script>
+
+<!-- ==================================================
+     HINO 52 — TUDO ENTREGAREI
+     
+================================================== -->
+<script>
+const hino52 = {
+    numero: 52,
+    titulo: "TUDO ENTREGAREI",
+    letra: "1\nTudo, ó Cristo, a Ti entrego\n Por ti Tudo deixarei\n Resoluto, mas submisso\n Sempre a ti eu seguirei\n\nCoro\n Tudo Entregarei\n Tudo Entregarei\n Tudo, sim Jesus bendito\n Tudo deixarei\n\n 2\n Tudo, ó Cristo, a Ti entrego\n Corpo e alma, eis-me aqui\n Todo mundo eu renego\n Digna-te aceitar a mim\n\n 3\n Tudo, ó Cristo, a Ti entrego\n Quero ser somente teu\n Tão submisso a tua vontade\n Como os anjos lá no céu\n\n 4\n Tudo, ó Cristo, a Ti entrego\n Oh, Eu sinto teu amor\n Transformar a minha vida\n E meu coração, senhor\n\n 5\n Tudo, ó Cristo, a Ti entrego\n Oh, que gozo, meu Senhor\n Paz perfeita, paz completa!\n Glória, glória ao Salvador"
+};
+</script>
+
+<!-- ==================================================
+     HINO 53 — NZAMBI WA VANA
+     
+================================================== -->
+<script>
+const hino53 = {
+    numero: 53,
+    titulo: "NZAMBI WA VANA",
+    letra: "1\nNzambi Wa Vana Muana Yandi Mossi\n Kassi Vo Tua Vuluze Nza\n Ntonda Yesu Mu Ntima Ku Wonso\n Kassi Wa Kota Mu Mbaza Yo\n\nCoro\n Nfumu\n Yesu We Ti Bokela\n Mpansi Vo Twa Kala Va Mossi \n Nyangui Nkembo Kuzulo\n Ye Zimbanzi Tu Na Yimbila\n Ze Nkundi Wiza Landa Yesu\n Nzila Kiedica Ye Moyo\n\n 2\n Nkundi Ami Ntango Yeti Vioca \n Se Wa Fua Mu Massumo Mako\n Se Wua Dila Ye Kuekessa Meno\n Mu Mpassi Zo Za Kondua Nsuca\n\n 3\n Yesu Wa Fwa Mu Massumo Meto \n Kia Ntantu Wa Nunga Ku Sia Bafwa \n Ye Wa Mata Ku Zulu Dia Nkembo\n Kubika Bi Fulu Kwa Ba Nunga"
+};
+</script>
+
+<!-- ==================================================
+     HINO 54 — TUSIVA ÑALA
+     
+================================================== -->
+<script>
+const hino54 = {
+    numero: 54,
+    titulo: "TUSIVA ÑALA",
+    letra: "1\nTuimbili Ñala Wa Tunga Oluali\n Eye Soma Yo Lo Soma\n\nCoro\n Aleluia 2x Tusivayi Ñala\n Tusivayi Ñala Yeto\n\n 2\n Tuimbili Yesu Watu Yovola\n Eye Wa Fila Kekulusso\n\n 3\n Tuimbili Oh Oh Oh Tchilelembia\n Eye Utu Kwatissa"
+};
+</script>
+
+<!-- ==================================================
+     HINO 55 — DEUS É O CRIADOR
+     
+================================================== -->
+<script>
+const hino55 = {
+    numero: 55,
+    titulo: "DEUS É O CRIADOR",
+    letra: "1\nDeus É O Criador;\n Eternamente É Rei.\n Ele Criou O Universo;\n Eternamente É Rei.\n Ele Criou O Mar;\n Eternamente É Rei.\n Ele Criou O Sol;\n Eternamente É Rei\n\nCoro\n Adorai, Adorai, Adorai, Adorai,\n Eternamente É Rei.\n Cantai, Cantai, Cantai, Cantai,\n Eternamente É Rei.\n É Santo, É Santo, É Santo, É Santo,\n Eternamente É Rei.\n\n 2\n Deus É O Criador;\n Ele Criou A Chuva\n Ele Criou O Vento\n Ele Criou O Arvoredo\n\n 3\n Deus É O Criador\n Ele Criou A Vida\n Ele Criou O Homem\n Ele Criou O Mantimento\n\n 4\n Enviou Jesus Cristo\n Ele É O Savador Dos Homens\n E É O Espírito Santo\n Limpa O Coração."
+};
+</script>
+
+<!-- ==================================================
+     HINO 56 — DIEU EST LE CRÉATEUR
+     
+================================================== -->
+<script>
+const hino56 = {
+    numero: 56,
+    titulo: "DIEU EST LE CRÉATEUR",
+    letra: "1\n Dieu Est Le Créateur,\n Eternellement Il Est Roi\n Il A Crée L’univers\n Eternellement Il Est Roi\n Il A Crée La Mar\n Eternellement Il Est Roi\n Il A Crée Le Soleil\n Eternellement Il Est Roi\n\nCoro\n Adorons, Adorons, Adorons, Adorons\n Eternellement Il Est Roi\n Chantons, Chantons, Chantons, Chantons,\n Eternellement Il Est Roi\n Il Est Saint, Il Est Saint, Il Est Saint, Il Est Saint,\n Eternellement Il Est Roi.\n\n 2\nDieu Est Le Créateur,\n Eternellement Il Est Roi\n Il A Crée La Pluie\n Il A Crée Le Vent\n Il A Crée Les Plantes\n\n 3\n Dieu Est Le Créateur,\n Il A Crée  La Vie\n Il A Crée L’homme\n Il A Crée Le Maintien\n\n 4\n Il A Envoyé Jésus Christ\n Il Est Le Sauveur Des Hommes\n Il Est Le Saint Esprit\n Il Purifie Le Coeur"
+};
+</script>
+
+<!-- ==================================================
+     HINO 57 — YAWE BOLINGO MONENE
+     
+================================================== -->
+<script>
+const hino57 = {
+    numero: 57,
+    titulo: "YAWE BOLINGO MONENE",
+    letra: "1\n Yawe Bolingo Monene\n Atindi Muana Na Ye\n Ko Kufela Nbatu Nionso\n E Te Ba Zua Lobiko\ncoro\n Bolingo Na Ye Eleki\n Yesu A Kufeli Bisou\n Tika To Sanzola Ye\n\n 2\n Pona Bolingo A Kufa\n Liwa Ya Soni Mingi\n Na Bolingo Bakanga Ye\n A Finga Ki Moto Te\ncoro\n Linga Bote Na Masiya\n Lokola Yo Moko Penza\n Ko Pona Pona Ka Te\n\n 3\n Bisou Bato Ya Mokili\n Tozala Na Bolingo\n Tomekola Ka Masiya\n Na Bolingo Ya Soló\ncoro\n Bolingana Ko Kosa Te\n Bolingana Ko Pona Te\n Bolingana Boboto"
+};
+</script>
+
+<!-- ==================================================
+     HINO 58 — VITÓRIA
+     
+================================================== -->
+<script>
+const hino58 = {
+    numero: 58,
+    titulo: "VITÓRIA",
+    letra: "1\nSou salvo em Cristo Jesus \n E tenho a vitória\n E tenho a vitória\n E cantarei vitória \n Vitória 3x Em Jesus.\n\n Eu terei em Jesus 3x  \n No sangue de Jesus\n\nCoro\n Solista: Nosso Deus já deu vitória \n Lá na cruz já deu vitória \n Somos salvo pela graça \n Pois o preço lá na cruz \n E agora cantarei \n Louvaremos no sangue de Jesus 4x  \n Todos: Vitória 10 x\n\n Vitória… 3x Em  Jesus"
+};
+</script>
+
+<!-- ==================================================
+     HINO 59 — SIKAMA
+     
+================================================== -->
+<script>
+const hino59 = {
+    numero: 59,
+    titulo: "SIKAMA",
+    letra: "1\nSikama Ye Telama Wa Sala Salu Kia Nzambi,\n Silulu Kia Silua Kwa Yeso Nvulusi,\n Wena Mu Nza Ya Vimba Mu Muanga Samu Wo,\n Kwa Makanda Ye Zi Ndinga Mabaca Mpulusu.\n \nCoro\n Solista: Aleluia Eh, Eh, Eh, Aleluia\n Todos: Ku Zulu Tu Yimbila Babonsono Wó\n Petamu Leninga Yo,\n Sibaveua Coloua Kwa Yeso Klisto \n E Fumu A Salu Kio\n\n 2\n Inga Zintotolo Zena Mu Salu Ki Kia Fumu\n Tatamana Mu Yandi Sadissa Babo,\n Yandi Ua Tu Vana Mpeeve Ya Longo,\n Ina Kala Yeto Mu Ntango Zazonsono.\n\n 3\n Kundi Tala Tangu Yeti Vanua Kwa Ngeye Pangui,\n Toma Fiongononanga Ntima Kuau,\n Landa Nzila Yilu Ilutidi Nzila Zazo,\n Ina Ikutuala Kwa Yeso Nvulusi."
+};
+</script>
+
+<!-- ==================================================
+     HINO 60 — MENGA MA YESU
+     
+================================================== -->
+<script>
+const hino60 = {
+    numero: 60,
+    titulo: "MENGA MA YESU",
+    letra: "1\n Mengama Yesu Mampulusanga\n Mankula Mu Nkano Ye Nzungu Zafwa\n Oh! Yimbila Yesu Ye Sikadise\n Mwana Wa Zambi Wanfutila Yo\n \n Coro\n Yesu! Yesu!\n I Yandi Wanfutila Nkano Miamo\n Yesuị Yesuị\n Haleluya Kwa Yesu Wanfutila Yo\n \n 2\n Menga Ma Yesu Mantaninanga\n Zimbasi Zazulo Zayangalala\n Kimwana Kia Nzambi Yatambudi Kio\n Mwana Wa Nzambi Wanfutila Yo\n \n 3\n Menga Ma Yesu Mandungisanga\n Lusulo Lwa Sꞌami Luvangamanga\n Ohị Ntalu Yinene Yankudila Yo\n Mwana Wa Nzambi Wanfutila Yo\n \n 4\n Menga Ma Yesu Mandungisanga\n Ohị Tonda Kwa Nzambi Ye Mwanꞌ Andi Mpe\n Mi Mpeve Yanlongo Yansadisanga\n Mwana Wa Nzambi Wanfutila Yo"
+};
+</script>
+
+<!-- ==================================================
+     HINO 61 — O MEU PASTOR É O BOM JESUS
+     
+================================================== -->
+<script>
+const hino61 = {
+    numero: 61,
+    titulo: "O MEU PASTOR É O BOM JESUS",
+    letra: "1\nO meu pastor é o bom Jesus,\n Jamais me deixará.\n Às águas calmas me conduz,\n E me protegerá\n\n 2\n Jesus minha alma quer nutrir,\n Em pastos de amor;\n E meu caminho dirigir,\n Por onde quer que for.\n\n 3\n Com seu cajado e seu bordão\n Jesus me guardará;\n E quando em vale de aflição,\n Consolo me dará.\n\n 4\n Com óleo puro vem me ungir;\n Não mais terei temor.\n E para sempre habitarei.\n Na casa do senhor."
+};
+</script>
+
+<!-- ==================================================
+     HINO 62 — EIS MENSAGEM DO SENHOR
+     
+================================================== -->
+<script>
+const hino62 = {
+    numero: 62,
+    titulo: "EIS MENSAGEM DO SENHOR",
+    letra: "1\nEis mensagem do Senhor aleluia\n É cheia de perdão e amor\n Cristo salva o pecador aleluia\n Salva  até por meio do olhar.\n \nCoro\n 1 voz: olhai pós e viver\n 2,3,4 voz: olhai pós olhai e viver\n Todos: Confiai só em Jesus\n Ele salva o pecador aleluia\n Salva até por meio do olhar\n\n 2\n Nossa culpa já pagou aleluia\n Jesus a satisfez na cruz\n Sua vida já entregou aleluia\n Para nos apresentar a Deus\n\n 3\n Sua Graça nos legou aleluia\n Eterna Vida lá nos céus\n Confiai só em Jesus aleluia\n Convertei-vos hoje mesmo a Deus\n\n 4\n Aceitai a salvação aleluia\n Seguir os passos do Senhor\n Proclamai o seu perdão aleluia\n Exaltai o grande redentor."
+};
+</script>
+
+<!-- ==================================================
+     HINO 63 — WA KALA
+     
+================================================== -->
+<script>
+const hino63 = {
+    numero: 63,
+    titulo: "WA KALA",
+    letra: "1\nWakala Mu Minsinga Mia Satana\n Nsambi Mu Zola Kwandi Wa Tu Fidisa\n Yesu Yandi Wa Fwa Mu Masumu Meto\n Yandi Wa Tu Kula Va Nza\n\n CORO\n 1°Voz: O Nsilulu I, Ku, Tuna, Kune Zulu I, Mpasi.\n Ku Zulu Dia Nkembo\n\n 2°, 3°,4°Voz:  O Nsilulu Katusila, Kulutidi\n ( 2°Voz Babo)  Tuna Kwenda\n Kune Zulu Ye Wandilu\n Mpasi Malema Ka Biena Ko\n Ku Zulu Dia Nkembo\n\n \n \n 2\n Mfumo Ka Zolele Ko Vo Mosi Ka Vila\n Kadi Mu Nzo Ya Sami Fulu Beni Biena Mo\n Kadi Vo Tu Manisi Zingu Kieto Va Nza\n Tuna Kwenda Ku Zulu Dia Se\n\n 3\n Ngeye Nlongi Ye Mbangi Wa Tambikwa Kio\n O Vwidi Kisalu Kwanani Vana Kio\n Wonso Munto Simbidila Ki Wa Tambula\n Ki Wa Vewa Kwa Mvulus"
+};
+</script>
+
+<!-- ==================================================
+     HINO 64 — MPANGUI BU
+     
+================================================== -->
+<script>
+const hino64 = {
+    numero: 64,
+    titulo: "MPANGUI BU",
+    letra: "1\nMpangui Bu Weti Zinga\n Va Nza Yayi Yamasumu\n Nza Ya Diata Ah Ah Ah\n Kadi Nza Yena Ya Mbi\n Kadi Ya Mpemba Utelamene\n Mu Bunga Bana Ba Nzambi\n\nCoro\n Tatamana Mu Salu Kio\n Wa Bokelwa\n Sadila Nzambi Wau Wena Ntangu \n Wiza Nza Wena Mu Moko Wa Nkwa Wambi\n Mu Yisu Kaka Tulena Nunguina\n\n 2\n Ngueye Nkundi Ami\n Weti Leka Ntulu Nza Ya Vo\n Ye Nza Ya Kanguizi\n Kinvuama Sangu\n Ye Lekwa Yayonsono\n Biena Mu Nza Ya Mpyokila"
+};
+</script>
+
+<!-- ==================================================
+     HINO 65 — VAMOS TRABALHAR(SOPRANO)
+     
+================================================== -->
+<script>
+const hino65 = {
+    numero: 65,
+    titulo: "VAMOS TRABALHAR(SOPRANO)",
+    letra: "\n Vamos trabalhar irmãos fiéis\n Breve a noite chegará\n Na ceara santa de Jesus\n Muito a que fazer\n    \n \n Coro\n A luz de Deus                               De Deus\n Veio brilhar                                    Brilhar\n No vil do mil                                   No vil\n No do pecar                                    Pecar\n E as trevas densas                         Trevas\n A decipar                                         Densas\n E a triste                                           Tristes\n E não desfez                                    Desfez\n\n2\n Vamos pois lançar irmãos depressa\n A semente certa da palavra\n E Jesus dará o crescimento\n Frutos bons em glória do senhor\n Fim da luta santa salvos por Jesus\n Redmidos goza vida eterna e paz\n Tudo nos convida a servir\n A Jesus o sempre eterno Rei\n\n No lar celeste                             No lar\n Veio o brilhar                              Brilhar\n No vil do mil                                No vil\n No do pecar                                 Pecar\n Depois da vida                            Depois\n Terreal                                         Vamos\n Vamos viver                                  Viver\n No céu com Deus                   Com Deus\n\n Eia pois irmãos a trabalhar\n Breve o dia chegará\n Quando o certo a porta vai se abrir\n No eternal por vir"
+};
+</script>
+
+<!-- ==================================================
+     HINO 66 — VAMOS TRABALHAR (TENOR)
+     
+================================================== -->
+<script>
+const hino66 = {
+    numero: 66,
+    titulo: "VAMOS TRABALHAR (TENOR)",
+    letra: "\n Vamos trabalhar irmãos fiéis\n Breve a noite chegará\n Na Ceara santa de Jesus\n Muito a que fazer\n\nCoro\n De Deus\n Brilhar\n No vil\n Pecar\n Trevas\n Densas\n Tristes\n Desfez\n \n2\n Vamos pois lançar depressa\n A semente da palavra\n E Jesus dará,\n Frutos bons em glória do Senhor\n Fim da luta santa\n Por Jesus remido, goza ao pai tudo\n Nos convida\n A servir ao sempre eterno rei\n\n No lar\n Brilhar\n No vil\n Pecar\n Depois\n Vamos\n Viver\n Com Deus\n\n Eia pois irmãos a trabalhar\n Breve o dia chegará\n Quando o certo a porta vai se abrir\n No eternal por vir"
+};
+</script>
+
+<!-- ==================================================
+     HINO 67 — WHAT A FRIEND WE HAVE IN JESUS
+     
+================================================== -->
+<script>
+const hino67 = {
+    numero: 67,
+    titulo: "WHAT A FRIEND WE HAVE IN JESUS",
+    letra: "1\nWhat a friend we have in Jesus \n All our sins and griefs to bear\n What a privilege to carry\n Everything to God in prayer\n Oh! What peace we often forfeit\n Oh! What needless pain we bear\n All because we do not carry\n Everything to God in prayer\n\n 2\n Have we trials and temptations?\n Is there trouble anywhere?\n We should never be discouraged\n Take it to the Lord in prayer\n Can we find a friend so faithful\n Who will all our sorrows share?\n Jesus knows our every weakness\n Take it to the Lord in prayer\n\n 3\n Are we weak and heavy laden\n Cumbered with a load of care?\n Precious Savior, still our refuge\n Take it to the Lord in prayer\n Do thy friends despise forsake thee\n Take it to the Lord in prayer\n In His arms Heˈll take and shield thee\n Thou wilt find a solace there\n In His arms Heˈll take and shield thee\n Thou wilt find a solace there"
+};
+</script>
+
+<!-- ==================================================
+     HINO 68 — DEIXA O SOL EM TI RAIAR
+     
+================================================== -->
+<script>
+const hino68 = {
+    numero: 68,
+    titulo: "DEIXA O SOL EM TI RAIAR",
+    letra: "1\nMedo tens que o inimigo vá vencer\n Pouca luz te faz agora estremecer\n Abre o coração e deixa Cristo entrar\n Deixa o sol em ti raiar\n \nCoro\n Deixa a luz do céu entrar\n Deixa o sol em ti nascer\n Abre o coração e deixa Cristo entrar\n Deixa o sol em ti raiar\n\n 2\n Fraca está a tua fé no Salvador?\n Deus não houve as tuas preces com favor\n Abre o coração e deixa Cristo entrar\n Deixa o sol em ti raiar\n\n 3\n Queres ir andando alegre para o céu\n Ignorando todo o negro e denso véu\n Abre o coração e deixa Cristo entrar\n Deixa o sol em ti raiar"
+};
+</script>
+
+<!-- ==================================================
+     HINO 69 — ALELUIA DE HENDEL – TENOR
+     
+================================================== -->
+<script>
+const hino69 = {
+    numero: 69,
+    titulo: "ALELUIA DE HENDEL – TENOR",
+    letra: "\nAleluia (5x)\nAleluia (5x)\n\nPois o Senhor onipotente reina\n Aleluia (4x)\n\n Pois o Senhor onipotente reina\n Aleluia (4x)\n\n Aleluia (5x)\n Pois o Senhor onipotente reina\n Aleluia, Aleluia, Aleluia\n Pois o Senhor onipotente reina\n Aleluia\n\n O reino deste mundo já passou\n A ser do Senhor nosso e do seu Cristo e do seu Cristo\n \n E ele reinará para sempre\n E reinará pra sempre e sempre\n E reinará pra sempre e sempre\n\n Pra sempre e sempre Aleluia Aleluia (5x)\n\n Rei dos Reis e grande Senhor\n E reinará E reinará\n E reinará pra sempre e sempre\n\n Rei dos Reis\n E grande Senhor\n E ele reinará para sempre e sempre\n\n Rei dos reis e grande Senhor (2x)\n E ele reinará para sempre\n\n Pra sempre e sempre (2x)\n Aleluia (4x)\n Aleluia"
+};
+</script>
+
+<!-- ==================================================
+     HINO 70 — MBONGUI
+     
+================================================== -->
+<script>
+const hino70 = {
+    numero: 70,
+    titulo: "MBONGUI",
+    letra: "1\nMbongui 3x\nMbongui a nene\nMbongui a kiese\nYa silulu kuanzambi\nTua solua ye bokelua\nMutunga yo\nMbanza ya luvuvamo\n\nCoro\nMpungi yi sikanga\nTelama ye kuenda\nSiwa bokua\nYe fundisua\nMosi mosi lumbu kio\nAweyi wasadila\nAweyi wa diatila\nDilu kina kala kuna\n\n2\nNzila 3x\nNzila ya fietama\nYe mpasi zingi\nKiadi kuangeye\nLekanda tulu\nMpofo um mpeve\nSikamanga wawu\n\n3\n\nSendo 3x\nLuna vewa kuababo\nBana nunga muamo nza\nNdonga ba meni\nVidisua muna\nMambu ma mbi\nYe ba vukumunua"
+};
+</script>
+
+<!-- ==================================================
+     HINO 71 — AVANTE, MOCIDADE (544 C.C)
+     
+================================================== -->
+<script>
+const hino71 = {
+    numero: 71,
+    titulo: "AVANTE, MOCIDADE (544 C.C)",
+    letra: "1\nMocidade Cristã, Eia Avante!\nVossas forças uni pra lutar\nO inimigo potente se mostra\nMas com Cristo sois fortes marchar!\n\nCoro\nMocidade Cristã, eia avante!\nContra o mal, Contra o erro lutai!\nTendo o santo evangelho por arma\nA verdade da cruz proclamai!\n\n2\nMocidade Cristã, vêde o abismo\nOnde muitos estão a cair!\nPor fartar-lhes a luz do evangelho\nNão procuram a Cristo seguir.\n\n3\nEia jovens ativos obreiros\nPela causa do bem pelejai!\nIde aos povos levar o evangelho\nPara a glória de Deus trabalhai!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 72 — 
+     
+================================================== -->
+<script>
+const hino72 = {
+    numero: 72,
+    titulo: "LÁZARO",
+    letra: "1\nQuem foi quem disse\nQuem não tem mais jeito\nQuem disse que não\nTem solução\nQuem foi quem disse\nQue já cheira mal\nQuem disse que a vida acabou\n\nCoro\n Solista: Oh Jesus!\nTodos: Jesus chamou ao Lázaro\nQue já cheirava mal\nLázaro sai pra fora 2x\nEu estou a tua espera\n\n2\nMesmo que a tempestade\nTentar me abalar\nNão… me atingirá\nO meu Deus é o Alfa e Omega\nQuem és tu… para me… derrubar"
+};
+</script>
+
+<!-- ==================================================
+     HINO 73 — ZIMBASSI KUNE ZULO
+     
+================================================== -->
+<script>
+const hino73 = {
+    numero: 73,
+    titulo: "ZIMBASSI KUNE ZULO",
+    letra: "1\nEh  Nfumu Ngueye Wa Tu Fuila Va Nti\n Wa Fuila Mu Massumo Mieto\n Wa Tambudila Lufua Mpe Wa Komua Va Nti\n Mu Vuluswanga Beto Babo\n\nCoro\n Zimbassi Kune Zulo\n Zeti Yimbilanga Nkunga\n Ozana Kune Zulo Diase. Diase…\n Kadi Yesu Wa Nunga\n E Nza Ya Masumo\n Tu Yangalala Beto Babo\n\n 2\n Bika Beto Babonso Tua Songa Zola\n Kua Nfumo Nzambi A Moyo\n Mu Vulusuanga Beto Babo."
+};
+</script>
+
+<!-- ==================================================
+     HINO 74 — DIGNO É O CORDEIRO
+     
+================================================== -->
+<script>
+const hino74 = {
+    numero: 74,
+    titulo: "DIGNO É O CORDEIRO",
+    letra: "1\nDigno é o cordeiro\n Que tira o pecado do mundo\n E que foi morto por nós\n Vertendo o seu sangue na cruz\n Por causa do seu povo se entregou\n Lá na cruz\n\nCoro\n 1ª, 3ª: Digno\n 2ª e 4ª: Digno é o senhor\n Todos: Digno 2x é o cordeiro que padeceu\n 1ª e 2ª: Ahhh……..haaaa\n 3ª e 4ª: Digno é o cordeiro\n Digno é o senhor\n\n\n\n Nunca houve jamais haverá\n Um cordeiro como o Salvador\n Grandioso és tu Senhor\n\n Adorarei o seu nome para sempre senhor\n Exaltarei o seu nome e para sempre\n\n Hosana 2x\n Grandioso nas alturas 4x\n Grandioso é o Rei dos Reis\n Poderoso és tu Senhor\n\n Cordeiro Jesus damos-te louvor\n Pra sempre Jesus te louvamos senhor\n\n Amém 3x"
+};
+</script>
+
+<!-- ==================================================
+     HINO 75 — QUERO ESTAR AO PÉ DA CRUZ
+     
+================================================== -->
+<script>
+const hino75 = {
+    numero: 75,
+    titulo: "QUERO ESTAR AO PÉ DA CRUZ",
+    letra: "1\nQuero estar ao pé da cruz,\n De onde rica fonte\n Corre franca, salutar,\n Do Calvário monte.\n\nCoro\n Sim, na cruz, sim, na cruz,\n Sempre me glorio,\n E em fim vou descansar,\n Salvo, além do rio.\n\n 2\n Sempre a cruz, Jesus, meu Deus,\n Queiras recordar-me;\n Dela à sombra, Salvador,\n Queiras abrigar-me.\n\n 3\n Junto a cruz, ardendo em fé.\n Sem temor vigio,\n Pois à terra santa irei,\n Salvo, além do rio."
+};
+</script>
+
+<!-- ==================================================
+     HINO 76 — VIVO POR FÉ
+     
+================================================== -->
+<script>
+const hino76 = {
+    numero: 76,
+    titulo: "VIVO POR FÉ",
+    letra: "1\nUm dia virá outra vez o Senhor\n Ao céu ele nos levará\n Ali cessará todo mal e temor\n E Deus todo dominará\n\nCoro\n Vivo por fé............ Sim vivo por fé\n É meu salvador\n Não temerei\n É fiel meu Senhor\n Em toda dor\n Nunca me deixará............. Não me deixará\n Sim vivo por fé\n Ele me guardará\n\n 2\n Sem fé é impossível agradar ao senhor\n Pois o justo vive da fé\n Os salvos confiam em seu salvador\n Pois sua palavra é fiel\n\n 3\n As lutas que vem para os crentes aqui\n Oh! Não há de se comparar\n Em glória celeste iremos fluir\n Lá no nosso querido lar"
+};
+</script>
+
+<!-- ==================================================
+     HINO 77 — UTU VANA MOYO
+     
+================================================== -->
+<script>
+const hino77 = {
+    numero: 77,
+    titulo: "UTU VANA MOYO",
+    letra: "1\nUtu Vana Moyo\n Ye Pulusu\n Passo Twa Ku Kembela\n Mu Kifumu Kina Vioka Ko\n Mpulusu Eh Nina\n Kwa Ba Veledi\n Bana Kota Mu Zulu\n Dia Dise\n\nCoro\n Yimbi Dila Mfumu Yo\n Sanisina Mvulusi\n Yimbila Mfumu\n Sanisina Nga Mvulusi Yoho\n Mpulusu Ye Nina\n Kwa Baveledi\n Bana Kota Mu Zulu\n Dia Dise\n\n 2\n Pungui Bu Ivova\n Mu Nza Yayo\n Mvulusi Si Ka Lwaka\n Ye Zimbasi Zi Na Yimbila\n Ntoto Ni Ku Suka\n Ye Zakama\n Tuna Mona Mbanza Ya\n Veledi\n\n 3\n Mono Mbe Kinzombe\n Mu Mbanza Yo\n Mfumu Yesu Mpe Niyo\n Muna Fwilu Vana Nkulusi\n Luba Kwa Bizitu\n Lwiza Kwa Se\n Moyo Luna Tambula\n Mvu Ya Mvu"
+};
+</script>
+
+<!-- ==================================================
+     HINO 78 — MANANCIAL (214 H.A)
+     
+================================================== -->
+<script>
+const hino78 = {
+    numero: 78,
+    titulo: "MANANCIAL (214 H.A)",
+    letra: "1\nManancial de toda bênção,\n Vem o canto me inspirar!\n Dons de Deus que nunca cessam,\n Quero em alto som louvar.\n Faz brotar-me novo canto\n Dos remidos lá na luz;\n E Teu servo, faze-o santo,\n Pra louvar-te, ó Jesus!\n\n 2\n Meus louvores dar eu quero,\n Pois Jesus me socorreu,\n E por Sua graça espero\n Transportar-me para o Céu.\n Eu, perdido, procurou-me,\n Longe, longe, já sem luz;\n Maculado, resgatou-me,\n Com Seu sangue, meu Jesus.\n\n 3\n Cada dia, cada hora,\n Sou à graça devedor;\n Não me lances nunca fora,\n Confiarei em Teu amor.\n Eis minha alma vacilante,\n Faze-a firme em Teu amor;\n Faz-me justo, bom, constante,\n Para sempre, ó Senhor!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 79 — OH QUE BELOS HINOS (274 C.C)
+     
+================================================== -->
+<script>
+const hino79 = {
+    numero: 79,
+    titulo: "OH QUE BELOS HINOS (274 C.C)",
+    letra: "1\nOh! Que belos hinos Cantam lá nos céus,\n Pois o filho o mundo abandonou!\n Vede no caminho o Bom pai abraçar,\n Esse filho que ele Tanto amou.\n\nCoro\n Glória, glória, Os anjos cantam lá!\n Glória, glória, As harpas tocam já!\n É o santo coro, Dando glória a Deus,\n Por mais um remido Entrar nos céus.\n\n 2\n Oh! Que belos hinos Cantam lá nos céus!\n É que já se reconciliou\n A alma revoltosa, Que submissa a Deus,\n Convertido o mundo Abandonou!\n\n 3\n Ó arrependidos, Hoje festejai,\n Como os anjos fazem Com fervor!\n Ide pressurosos, Vós e anunciai\n Que se resgatou um pecador!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 80 — OUVINDO JESUS (438 C.C)
+     
+================================================== -->
+<script>
+const hino80 = {
+    numero: 80,
+    titulo: "OUVINDO JESUS (438 C.C)",
+    letra: "1\nDisse Jesus: ide por todo o mundo\n E pregai o eterno dom\n Da salvação que com amor profundo\n Dá o Deus gracioso e bom;\n Tendo na cruz a afirmação do amor,\n Proclamai o dom do redentor.\n Oh! Conquistai almas perdidas, buscai\n O pecador enfermo, quase moribundo!\n\nCoro\n Vamos, irmãos, levar\n Essa luz ao mundo inteiro!\n Vamos, irmãos, contar\n Que esse dom é verdadeiro!\n Vamos, irmãos, pregar\n Mui confiados no cordeiro\n Que na cruz já fez a nossa redenção!\n\n 2\n Todos unidos neste grande intento proclamemos salvação!\n Sem recuar, sempre mostrando alento,\n Sim, cumpramos a missão\n Que o salvador, Cristo Jesus nos deu!\n Ele está também no posto seu.\n Diz-nos o rei: “sempre convosco estarei.”\n Vamos, irmãos, por Cristo neste pensamento!\n\n 3\n Firmes, levemos a mensagem santa\n Do evangelho de Jesus!\n Esta mensagem divinal que encanta\n E que o pecador conduz;\n Cheia de bênçãos do glorioso Deus,\n Que descobre os escolhidos seus,\n Cheia de amor, traz-nos do céu o fragor\n Da compaixão de Deus e dá-nos graça tanta!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 81 — CRENTES CANTAI (436 H.P)
+     
+================================================== -->
+<script>
+const hino81 = {
+    numero: 81,
+    titulo: "CRENTES CANTAI (436 H.P)",
+    letra: "1\nCrentes, cantai e entoai louvores\n Ao senhor, ao nosso Deus,\n Deus de bondade infinita, imensa,\n Criador da terra e céus;\n Que, com poder tão vasto e eficaz,\n Deu-nos salvação e plena paz.\n Glória e louvor ao Deus de amor;\n Com fervor, sinceramente,\n Glória ao pai onipotente!\n\nCoro\n Ao nosso criador,\n Honra e glória tributemos,\n Ao nosso salvador,\n Mil louvores entoemos;\n E ao bom consolador,\n Honra e louvor demos também;\n Honra a trindade para sempre, amém.\n\n 2\n Crentes, cantai e entoei louvares\n A Jesus, o Salvador,\n Que nos amou e nos salvou p’ra sempre,\n Do poder do tentador,\n Glória a Jesus, autor da salvação,\n Toda honra, glória e adoração,\n Glória e louvor ao salvador,\n Com vigor, ardentemente,\n Glória ao filho omnisciente!\n\n 3\n Crentes, cantai e entoei louvores\n Ao divino preceptor,\n Que nos mandou Cristo, já exaltado,\n Pela dextra do senhor;\n Hoje louvei ao bom consolador.\n Que nos enche de fervente amor!\n Glória e louvor ao instruidor,\n Com ardor, e um lindo canto\n Dai ao Espírito Santo!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 82 — MARCHEMOS SEM TEMOR (241 H.P)
+     
+================================================== -->
+<script>
+const hino82 = {
+    numero: 82,
+    titulo: "MARCHEMOS SEM TEMOR (241 H.P)",
+    letra: "1\nP’ra Sião marchemos sem algum temor,\n Por fé nos chamamos filhos do senhor;\n Presto caminhamos, sem pra trás olhar,\n Com Jesus nós vamos, não podemos errar.\n\nCoro\n Marchemos sem temor, repletos de valor, \n Marchemos nas pisadas do bom redentor; \n Depressa, sem tardar, até no céu entrar;\n Por Jesus podemos sempre triunfar.\n\n 2\n P’ra Sião marchamos sem desanimar,\n A verdade, vamos todos proclamar;\n Presto caminhemos, carregando a cruz,\n Pois nós desejamos ver no céu a Jesus.\n\n 3\n P’ra Sião marchamos em celeste luz,\n Dirigidos vamos pro senhor Jesus;\n Presto caminhemos, rasga-se o véu;\n Já daqui estamos, pela fé, vendo o céu."
+};
+</script>
+
+<!-- ==================================================
+     HINO 83 — NGUINA YE KIESE
+     
+================================================== -->
+<script>
+const hino83 = {
+    numero: 83,
+    titulo: "NGUINA YE KIESE",
+    letra: "1\n Nguina ye kiese\n Mu ntima ame wau\n Kadi mu yisu\n i  mwenangʼe lau\n Muna nkanda andi yatanguidi wo\n Yisu wa nsobelʼo ntu\n\nCoro\n Yimbidila\n Yimbidila\n Yimbidila\n Yisu wa nsobelʼo ntu\n\n 2\n Nana ya vila\n Ya vila kana\n Vo ó yisu yandi i nvulusi\n Kadi mu yandi Muena moyo a mpa\n Yisu wa nsobelʼo ntu"
+};
+</script>
+
+<!-- ==================================================
+     HINO 84 — PAI CELESTE (ORAÇÃO 165 C.C)
+     
+================================================== -->
+<script>
+const hino84 = {
+    numero: 84,
+    titulo: "PAI CELESTE (ORAÇÃO 165 C.C)",
+    letra: "1\n Pai celeste, Deus bendito,\n Manifesta teu amor!\n A teus pés eis-nos prostrados\n Implorando teu favor!\n \n Aos que jazem no pecado\n Mostra a luz da salvação.\n Vem brilhar em nossas almas,\n Ilumina os corações\n\n 2\n Nesta vida atribulada\n Vem, Senhor, nos consolar!\n Aos aflitos e cansados\n Mostra teu amor sem par!\n Nas fraquezas do conforto,\n Aumentando nossa fé,\n E firmando, com bondade,\n Sobre a rocha nosso pé!\n\n 3\n Nossas culpas e delitos\n Tu nos podes perdoar!\n Vem guiar-nos no caminho\n Que conduz ao santo lar!\n Por Jesus, teu filho amado,\n Nosso eterno sumo bem,\n Tudo nós te suplicamos,\n Glória a ti, senhor. Amém!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 85 — ALVO MAIS QUE A NEVE (123 C.C)
+     
+================================================== -->
+<script>
+const hino85 = {
+    numero: 85,
+    titulo: "ALVO MAIS QUE A NEVE (123 C.C)",
+    letra: "1\n Bendito seja o cordeiro\n Que na cruz por nós padeceu!\n Bendito seja o seu sangue\n Que por nós ali ele verteu!\n Eis nesse sangue lavados,\n Com roupas que tão alvas são,\n Os pecadores remidos,\n Que perante seu Deus hoje estão!\n\nCoro\n Alvo mais que a neve!\n Alvo mais que a neve!\n Sim, nesse sangue lavado,\n Mais alvo que a neve serei!\n\n 2\n Quão espinhosa a coroa\n Que Jesus por nós suportou!\n Oh! Quão profundas as chagas\n Que nos provam o quanto ele amou\n Eis, nessas chagas, pureza\n Para o mais torpe pecador,\n Pois que mais alvos que a neve\n O teu sangue nos torna, senhor!\n\n 3\n Se nós a ti confessarmos,\n E seguirmos na tua luz,\n Tu não somente perdoas,\n Purificas também, ó Jesus;\n Sim, e de todo o pecado!\n Que maravilha desse amor!\n Pois que mais alvos que a neve\n O teu sangue nos torna, senhor!"
+};
+</script>
+
+<!-- ==================================================
+     HINO 86 — A VELHA HISTÓRIA (50 C.C)
+     
+================================================== -->
+<script>
+const hino86 = {
+    numero: 86,
+    titulo: "A VELHA HISTÓRIA (50 C.C)",
+    letra: "1\n Contai-me a velha história\n Do grande Salvador;\n De Cristo e sua glória,\n De Cristo e seu amor.\n Com calma e com paciência,\n Pois quero penetrar\n À altura do mistério:\n Que Deus nos pode amar.\n\nCoro\n Contai-me a velha história,\n Contai-me a velha história,\n Contai-me a velha história\n De Cristo e seu amor.\n\n2\n Falai-me com doçura\n Do amante redentor;\n Falai com sentimento,\n Pois sou um pecador!\n Querendo consolar-me\n Em tempos de aflição,\n Sempre essa velha história\n Dizei do coração.\n\n3\n Se o brilho deste mundo\n Toldar do céu a luz,\nNarrai a mesma história\nDa graça de Jesus!\n E quando, enfim, a glória\n Do mundo além raiar,\n Contai-me a velha história,\n Que veio aqui salvar."
+};
+</script>
+
+<script>
+const hino87 = {
+    numero: 87,
+    titulo: "SAUDAI EMANUEL (59 C.C)",
+    letra: "1\n Saudamos-te, ó Emanuel!\n A ti louvores damos\n De coração, sim, todos nós\n A ti nos entregamos\n Em honra a ti, Senhor e Rei\n Os anjos cantam lá no céu\n E lá ressoa teu louvor\n Saudai! Saudai!\n Saudai, Saudai! Emanuel!\n\n Coro\n Rei, Emanuel, Emanuel!\n Rei, Emanuel, Emanuel!\n Sabedoria, poder sem fim\n Honras e Glória as nações te dêem\n Hoje e para sempre!\n Rei, Emanuel, Emanuel!\n Rei, Emanuel, Emanuel!\n Rei dos Reis, e Salvador!\n Saudai Emanuel!\n\n 2\n Saudamos-te, ó Emanuel!\n Os santos te rodeiam\n Os Reis da terra se erguerão\n A proclamar teu reino,\n Enquanto os filhos já com Deus\n Cercando o trono\n Lá nos céus, entoam\n Hinos irmotais\n Saudai! Saudai!\n Saudai, Saudai! Emanuel!\n\n 3\n Saudamos-te, ó Emanuel!\n Ó Rei dos Reis, eterno!\n Venceste as hostes infernais\n Tu és onipotente!\n Jamais a morte reinará\n Nem mal algum dominará\n Eterna glória seja a ti\n Saudai! Saudai!\n Saudai, Saudai! Emanuel! "
+};
+</script>
+
+
+<script>
+const hinarios = [
+    hino1,
+    hino2,
+    hino3,
+    hino4,
+    hino5,
+    hino6,
+    hino7,
+    hino8,
+    hino9,
+    hino10,
+    hino11,
+    hino12,
+    hino13,
+    hino14,
+    hino15,
+    hino16,
+    hino17,
+    hino18,
+    hino19,
+    hino20,
+    hino21,
+    hino22,
+    hino23,
+    hino24,
+    hino25,
+    hino26,
+    hino27,
+    hino28,
+    hino29,
+    hino30,
+    hino31,
+    hino32,
+    hino33,
+    hino34,
+    hino35,
+    hino36,
+    hino37,
+    hino38,
+    hino39,
+    hino40,
+    hino41,
+    hino42,
+    hino43,
+    hino44,
+    hino45,
+    hino46,
+    hino47,
+    hino48,
+    hino49,
+    hino50,
+    hino51,
+    hino52,
+    hino53,
+    hino54,
+    hino55,
+    hino56,
+    hino57,
+    hino58,
+    hino59,
+    hino60,
+    hino61,
+    hino62,
+    hino63,
+    hino64,
+    hino65,
+    hino66,
+    hino67,
+    hino68,
+    hino69,
+    hino70,
+    hino71,
+	hino72,
+	hino73,
+	hino74,
+	hino75,
+	hino76,
+	hino77,
+	hino78,
+	hino79,
+	hino80,
+	hino81,
+	hino82,
+	hino83,
+	hino84,
+	hino85,
+	hino86,
+	hino87,
+];
+const textos={
+'Dedicatória':'Dedicamos este hinário a Deus, fonte de toda inspiração, e a todos os membros do grupo coral ECOS DA SALVAÇÃO, que com amor e dedicação usam suas vozes para louvar ao Senhor. E que cada cântico aqui contido seja uma oferta agradável a Deus.',
+'Agradecimentos':'Agradecemos primeiramente a Deus pela vida, força e sabedoria. Aos membros do coral, pela união e compromisso. E a todos que contribuíram direta ou indiretamente para a realização deste hinário. Que Deus abençoe a todos.',
+'Introdução':'Este hinário foi preparado com o objetivo de fortalecer a adoração e organizar os cânticos do grupo coral ECOS DA SALVAÇÃO. Aqui estão reunidos hinos que expressam fé, amor e entrega a Deus.',
+'Objetivo':'Promover a unidade do grupo coral. Facilitar os ensaios e apresentações. Incentivar a adoração a Deus. Levar mensagens de fé e esperança.',
+'Mensagem':'Louvar é mais do que cantar, é entregar o coração a Deus. Cada voz tem um valor, e juntas formam um só propósito: glorificar o Senhor.'
+};
+// MENU
+function isMenuOpen(){return drawer.classList.contains('open')}
+function openMenu(){drawer.classList.add('open');overlay.classList.add('show')}
+function toggleMenu(){isMenuOpen()?closeMenu():openMenu()}
+function closeMenu(){drawer.classList.remove('open');overlay.classList.remove('show')}
+
+// Abrir o menu arrastando o dedo para qualquer lado.
+// Esquerda -> direita OU direita -> esquerda abre o menu.
+let touchStartX=0, touchStartY=0;
+document.addEventListener('touchstart',function(e){
+  const t=e.touches[0];
+  touchStartX=t.clientX; touchStartY=t.clientY;
+},{passive:true});
+document.addEventListener('touchend',function(e){
+  if(!e.changedTouches.length || modal.classList.contains('show')) return;
+  const t=e.changedTouches[0];
+  const dx=t.clientX-touchStartX;
+  const dy=Math.abs(t.clientY-touchStartY);
+  // Qualquer arrasto horizontal suficientemente grande abre o menu.
+  if(Math.abs(dx)>=70 && dy<=80 && !isMenuOpen()) openMenu();
+  // Se o menu já estiver aberto, arrastar da direita para a esquerda fecha-o.
+  else if(isMenuOpen() && dx<=-70 && dy<=80) closeMenu();
+},{passive:true});
+
+function setTheme(c){
+  document.documentElement.style.setProperty('--primary',c);
+  const lightTextColors={'#ffffff':true,'#f39c12':true,'#f1c40f':true,'#55efc4':true,'#fd79a8':true,'#a29bfe':true};
+  document.documentElement.style.setProperty('--theme-text',lightTextColors[c]?'#111':'#fff');
+  document.documentElement.style.setProperty('--book-color',c==='#ffffff'?'#111':(c==='#000000'?'#fff':c));
+  localStorage.setItem('ecosTheme',c);
+}
+
+/* ==================================================
+   CONFIGURAÇÕES — guardar e aplicar ajustes
+================================================== */
+const defaultSettings={
+ fontFamily:'cambriaMath',fontSize:20,hymnTitleSize:20,lineHeight:1.7,letterSpacing:0,fontWeight:400,fontStyle:'normal',
+ textAlign:'center',textTransform:'none',bodyPadding:30,chorusEnabled:'on',chorusWeight:700,
+ chorusStyle:'normal',chorusTransform:'none',textColor:'#111111',textBackground:'#ffffff',chorusColor:'#111111',
+ darkMode:'off',savePreferences:'on'
+};
+const settingFonts={
+ cambriaMath:'"Cambria Math",Cambria,serif',cambria:'Cambria,serif',georgia:'Georgia,serif',
+ times:'"Times New Roman",Times,serif',garamond:'Garamond,serif',palatino:'"Palatino Linotype",Palatino,serif',
+ bookman:'"Bookman Old Style",Bookman,serif',baskerville:'Baskerville,serif',didot:'Didot,serif',bodoni:'"Bodoni MT",serif',
+ constantia:'Constantia,serif',calibri:'Calibri,sans-serif',candara:'Candara,sans-serif',corbel:'Corbel,sans-serif',
+ arial:'Arial,sans-serif',verdana:'Verdana,sans-serif',tahoma:'Tahoma,sans-serif',trebuchet:'"Trebuchet MS",sans-serif',
+ segoe:'"Segoe UI",sans-serif',franklin:'"Franklin Gothic Medium",sans-serif',century:'"Century Gothic",sans-serif',
+ futura:'Futura,sans-serif',helvetica:'Helvetica,Arial,sans-serif',optima:'Optima,sans-serif',monaco:'Monaco,monospace',
+ consolas:'Consolas,monospace',courier:'"Courier New",monospace',lucida:'"Lucida Console",monospace',impact:'Impact,sans-serif',
+ comic:'"Comic Sans MS",cursive',brush:'"Brush Script MT",cursive',copperplate:'Copperplate,serif',papyrus:'Papyrus,fantasy',
+ rockwell:'Rockwell,serif',perpetua:'Perpetua,serif',segoePrint:'"Segoe Print",cursive'
+};
+function getSettings(){try{return Object.assign({},defaultSettings,JSON.parse(localStorage.getItem('ecosSettings')||'{}'))}catch(e){return Object.assign({},defaultSettings)}}
+function currentSettings(){
+ const x=Object.assign({},defaultSettings);
+ Object.keys(defaultSettings).forEach(k=>{const el=document.getElementById(k);if(el)x[k]=el.value});
+ ['fontSize','hymnTitleSize','lineHeight','letterSpacing','bodyPadding'].forEach(k=>x[k]=Number(x[k]));
+ return x;
+}
+function openSettings(){closeMenu();loadSettingsForm();document.getElementById('settingsModal').classList.add('show')}
+function closeSettings(){document.getElementById('settingsModal').classList.remove('show')}
+function loadSettingsForm(){
+ const x=getSettings();
+ Object.keys(defaultSettings).forEach(k=>{const el=document.getElementById(k);if(el){el.value=x[k]}});
+ applySettings(false);
+}
+function applySettings(save=true){
+ const x=currentSettings();
+ if(save && x.savePreferences==='on')localStorage.setItem('ecosSettings',JSON.stringify(x));
+ const root=document.documentElement;
+ root.style.setProperty('--hymn-font',settingFonts[x.fontFamily]||settingFonts.cambriaMath);
+ root.style.setProperty('--app-font',settingFonts[x.fontFamily]||settingFonts.cambriaMath);
+ root.style.setProperty('--hymn-title-size',x.hymnTitleSize+'px');
+ root.style.setProperty('--hymn-size',x.fontSize+'px');
+ root.style.setProperty('--hymn-line',x.lineHeight);
+ root.style.setProperty('--hymn-spacing',x.letterSpacing+'px');
+ root.style.setProperty('--hymn-weight',x.fontWeight);
+ root.style.setProperty('--hymn-style',x.fontStyle);
+ root.style.setProperty('--hymn-align',x.textAlign);
+ root.style.setProperty('--hymn-transform',x.textTransform);
+ root.style.setProperty('--hymn-padding',x.bodyPadding+'px');
+ root.style.setProperty('--hymn-color',x.textColor);
+ root.style.setProperty('--hymn-background',x.textBackground);
+ root.style.setProperty('--chorus-weight',x.chorusEnabled==='on'?x.chorusWeight:x.fontWeight);
+ root.style.setProperty('--chorus-size',x.fontSize+'px');
+ root.style.setProperty('--chorus-style',x.chorusStyle);
+ root.style.setProperty('--chorus-transform',x.chorusTransform);
+ root.style.setProperty('--chorus-color',x.chorusColor);
+ applyToAllHymnBodies(x);
+ updateSettingsValues(x);
+ const preview=document.getElementById('settingsPreview');
+ if(preview){
+  preview.style.fontFamily=settingFonts[x.fontFamily]||settingFonts.cambriaMath;
+  preview.style.fontSize=x.fontSize+'px';preview.style.lineHeight=x.lineHeight;preview.style.letterSpacing=x.letterSpacing+'px';
+  preview.style.fontWeight=x.fontWeight;preview.style.fontStyle=x.fontStyle;preview.style.textAlign=x.textAlign;
+  preview.style.textTransform=x.textTransform;preview.style.paddingLeft=x.bodyPadding+'px';preview.style.paddingRight=x.bodyPadding+'px';
+  preview.style.color=x.textColor;preview.style.background=x.textBackground;
+  const strong=preview.querySelector('strong');if(strong){strong.style.fontWeight=x.chorusEnabled==='on'?x.chorusWeight:x.fontWeight;strong.style.fontSize=x.fontSize+'px';strong.style.fontStyle=x.chorusStyle;strong.style.textTransform=x.chorusTransform;strong.style.color=x.chorusColor}
+ }
+}
+function applyToAllHymnBodies(x){
+ document.body.style.fontFamily=settingFonts[x.fontFamily]||settingFonts.cambriaMath;
+ document.documentElement.style.setProperty('--app-font',settingFonts[x.fontFamily]||settingFonts.cambriaMath);
+ document.querySelectorAll('.modalTop h2').forEach(title=>title.style.fontSize=x.hymnTitleSize+'px');
+ document.querySelectorAll('.body').forEach(body=>{
+  body.style.fontFamily=settingFonts[x.fontFamily]||settingFonts.cambriaMath;
+  body.style.fontSize=x.fontSize+'px';body.style.lineHeight=x.lineHeight;body.style.letterSpacing=x.letterSpacing+'px';
+  body.style.fontWeight=x.fontWeight;body.style.fontStyle=x.fontStyle;body.style.textAlign=x.textAlign;body.style.textTransform=x.textTransform;
+  body.style.paddingLeft=x.bodyPadding+'px';body.style.paddingRight=x.bodyPadding+'px';body.style.color=x.textColor;body.style.background=x.textBackground;
+ });
+ document.querySelectorAll('.chorus').forEach(el=>{
+  el.style.fontWeight=x.chorusEnabled==='on'?x.chorusWeight:x.fontWeight;
+  el.style.fontSize=x.fontSize+'px';el.style.fontStyle=x.chorusStyle;el.style.textTransform=x.chorusTransform;el.style.color=x.chorusColor;
+ });
+}
+function updateSettingsValues(x){
+ [['fontSize',' px'],['hymnTitleSize',' px'],['lineHeight',''],['letterSpacing',' px'],['bodyPadding',' px']].forEach(([k,suffix])=>{const v=document.getElementById(k+'Value');if(v)v.textContent=x[k]+suffix});
+}
+function resetSettings(){localStorage.setItem('ecosSettings',JSON.stringify(defaultSettings));loadSettingsForm()}
+
+function openThemes(){closeMenu();document.getElementById('themeModal').classList.add('show')}
+function closeThemes(){document.getElementById('themeModal').classList.remove('show')}
+const saved=localStorage.getItem('ecosTheme');if(saved)setTheme(saved);
+function goTop(){window.scrollTo({top:0,behavior:'auto'})}
+function showHome(){app.className='';app.innerHTML='<div class="hero"><h2>Bem-vindo ao Ecos da Salvação</h2><p></div><div class="panel"><button class="navBtn" onclick="showHymns()">🎼 Abrir Hinário</button></div>';goTop()}
+function showSection(n){app.className='';app.innerHTML='<div class="panel section"><h2>'+n+'</h2><p>'+textos[n]+'</p></div>';goTop()}
+function showHymns(){app.className='hymnPage';app.dataset.view='hymns';app.innerHTML='<div class="hymnWelcomeCard"><h2>Bem-vindo ao Ecos da Salvação</h2></div><div class="hymnSearchBar"><span class="hymnSearchIcon">🔍</span><input id="search" class="hymnSearchInput" placeholder="Digite a sua busca aqui" oninput="renderList(this.value)"><button class="hymnClear" onclick="clearHymnSearch()" aria-label="Limpar pesquisa">×</button></div><div id="list"></div>';renderList('');goTop()}
+function clearHymnSearch(){const s=document.getElementById('search');if(s){s.value='';renderList('');s.focus()}}
+function renderList(q){q=q.toLowerCase();const l=document.getElementById('list');if(!l)return;l.innerHTML=hinarios.filter(h=>(h.numero+' '+h.titulo).toLowerCase().includes(q)).map(h=>'<button class=\"hymn\" onclick=\"openHymn('+h.numero+')\"><span class=\"bookIcon\" aria-hidden=\"true\"><svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M31 13c-6-4-13-5-22-3v35c9-2 16-1 22 3V13Zm2 0c6-4 13-5 22-3v35c9-2 16-1 22 3V13Zm-2 37c-7-4-14-5-24-3v4c10-2 17-1 24 3 7-4 14-5 24-3v-4c-10-2-17-1-24 3Z\"/></svg></span><span>'+h.numero+' - '+h.titulo+'</span></button>').join('')}
+let hymnHistoryActive=false;
+let currentOpenHymn=null;
+let currentHymnListMode="hymns";
+function getFavorites(){try{return JSON.parse(localStorage.getItem('ecosFavorites')||'[]').map(Number).filter(Number.isFinite)}catch(e){return []}}
+function isFavorite(n){return getFavorites().includes(Number(n))}
+function updateFavoriteButton(){const b=document.getElementById('favoriteBtn');if(b){b.textContent=isFavorite(currentOpenHymn)?'★':'☆';b.title=isFavorite(currentOpenHymn)?'Remover dos favoritos':'Adicionar aos favoritos'}}
+function toggleFavorite(){if(currentOpenHymn==null)return;let f=getFavorites();const n=Number(currentOpenHymn);f=f.includes(n)?f.filter(x=>x!==n):[...f,n];localStorage.setItem('ecosFavorites',JSON.stringify(f));updateFavoriteButton();if(app.dataset.view==='favorites')showFavorites()}
+function showFavorites(){app.className='hymnPage';app.dataset.view='favorites';const f=getFavorites();app.innerHTML='<div class="hymnWelcomeCard"><h2>🌟 Favoritos</h2></div><div id="list"></div>';const l=document.getElementById('list');l.innerHTML=f.length?hinarios.filter(h=>f.includes(h.numero)).map(h=>'<button class="hymn" onclick="openHymn('+h.numero+', true)"><span class="bookIcon" aria-hidden="true"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M31 13c-6-4-13-5-22-3v35c9-2 16-1 22 3V13Zm2 0c6-4 13-5 22-3v35c9-2 16-1 22 3V13Zm-2 37c-7-4-14-5-24-3v4c10-2 17-1 24 3 7-4 14-5 24-3v-4c-10-2-17-1-24 3Z"/></svg></span><span>★ '+h.numero+' - '+h.titulo+'</span></button>').join(''):'<div class="panel"><p>Nenhum hino foi adicionado aos favoritos.</p></div>';goTop()}
+function changeHymnSize(delta){const body=document.getElementById('modalBody');if(!body)return;const current=parseFloat(body.dataset.manualSize||getSettings().fontSize);const size=Math.max(12,Math.min(60,current+delta));body.dataset.manualSize=size;body.style.fontSize=size+'px';body.querySelectorAll('.chorus').forEach(el=>{el.style.fontSize=size+'px'})}
+
+function getCurrentNavigationHymns(){
+  return currentHymnListMode==='favorites'
+    ? hinarios.filter(h=>getFavorites().includes(Number(h.numero)))
+    : hinarios;
+}
+function previousHymn(){
+  if(currentOpenHymn==null)return;
+  const list=getCurrentNavigationHymns();
+  const index=list.findIndex(h=>h.numero===Number(currentOpenHymn));
+  if(index>0) openHymn(list[index-1].numero,currentHymnListMode);
+}
+function nextHymn(){
+  if(currentOpenHymn==null)return;
+  const list=getCurrentNavigationHymns();
+  const index=list.findIndex(h=>h.numero===Number(currentOpenHymn));
+  if(index>=0 && index<list.length-1) openHymn(list[index+1].numero,currentHymnListMode);
+}
+
+function openHymn(n, fromFavorites){
+  // A navegação depende da origem: Favoritos percorre só favoritos; Hinário percorre todos.
+  if(fromFavorites===true || fromFavorites==='favorites') currentHymnListMode='favorites';
+  else if(fromFavorites===false || fromFavorites==='hymns') currentHymnListMode='hymns';
+  else currentHymnListMode=(app.dataset.view==='favorites')?'favorites':'hymns';
+  const h=hinarios.find(x=>x.numero===n);
+  if(!h)return;
+  closeMenu();
+  modalTitle.textContent=h.numero+'. '+h.titulo;
+  modalTitle.className='hymnTitle';
+  currentOpenHymn=n;
+  updateFavoriteButton();
+  modalBody.innerHTML=h.letra?'<div class="verse">'+formatHymnLyrics(h.letra)+'</div>':'<div class="empty">A letra deste hino ainda será adicionada.</div>';
+  const settings=getSettings();modal.classList.remove('hymnDark');const db=document.querySelector('.darkToggle');if(db)db.textContent='🌙 Modo escuro';modal.classList.add('show');applyToAllHymnBodies(settings);if(settings.darkMode==='on'){modal.classList.add('hymnDark');if(db)db.textContent='☀️ Modo claro';const body=document.getElementById('modalBody');if(body){body.style.color='#fff';body.style.background='#151515';body.querySelectorAll('.chorus').forEach(el=>el.style.color='#fff');}}
+  modalBody.scrollTop=0;
+  if(!hymnHistoryActive){
+    history.pushState({ecosHymn:true},'',location.href);
+    hymnHistoryActive=true;
+  }
+}
+
+/* Bloqueia copiar/cortar/selecionar apenas dentro da janela do hino. */
+document.addEventListener('copy',function(e){
+  if(e.target.closest && e.target.closest('#modal')) e.preventDefault();
+});
+document.addEventListener('cut',function(e){
+  if(e.target.closest && e.target.closest('#modal')) e.preventDefault();
+});
+document.addEventListener('contextmenu',function(e){
+  if(e.target.closest && e.target.closest('#modal')) e.preventDefault();
+});
+
+function escapeHTML(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+// Coloca em negrito somente o CORO e todos os seus versos.
+// Os hinos sem CORO permanecem exatamente como estão.
+function formatHymnLyrics(text){
+  const lines=text.split('\n');
+  let inChorus=false;
+  let html=[];
+
+  for(let i=0;i<lines.length;i++){
+    const line=lines[i];
+    const trimmed=line.trim();
+
+    // Início do coro: aceita CORO, Coro, coro e variantes semelhantes.
+    if(/^coro\b/i.test(trimmed)) inChorus=true;
+
+    // Se aparecer um novo número de estrofe, termina o negrito do coro.
+    if(inChorus && !/^coro\b/i.test(trimmed) && /^\d+\s*(?:[ºª°]|\.)?\s*$/.test(trimmed)){
+      inChorus=false;
+    }
+
+    const safe=escapeHTML(line);
+    html.push(inChorus ? '<strong class="chorus">'+safe+'</strong>' : safe);
+  }
+  return html.join('\n');
+}
+function closeModal(fromBack=false){
+  if(!modal.classList.contains('show'))return;
+  modal.classList.remove('show');
+  if(hymnHistoryActive && !fromBack){
+    hymnHistoryActive=false;
+    history.back();
+  }else{
+    hymnHistoryActive=false;
+  }
+}
+
+// Botão VOLTAR do telemóvel: se a letra estiver aberta, fecha apenas a letra.
+window.addEventListener('popstate',function(){
+  if(modal.classList.contains('show')) closeModal(true);
+  else if(isMenuOpen()) closeMenu();
+});
+function toggleHymnDark(){modal.classList.toggle('hymnDark');const dark=modal.classList.contains('hymnDark');const b=document.querySelector('.darkToggle');if(b)b.textContent=dark?'☀️ Modo claro':'🌙 Modo escuro';const settings=getSettings();const body=document.getElementById('modalBody');if(body){body.style.color=dark?'#fff':settings.textColor;body.style.background=dark?'#151515':settings.textBackground;body.querySelectorAll('.chorus').forEach(el=>el.style.color=dark?'#fff':settings.chorusColor);}}
+function shareApp(){const text='Ecos Da Salvação - 🎼 Hinário';if(navigator.share)navigator.share({title:text,text:text}).catch(()=>{});else{navigator.clipboard?.writeText(text);alert('Nome do aplicativo copiado para partilhar.');}}
+function showAbout(){app.innerHTML='<div class="panel section aboutCard"><h2>Sobre o Ecos Da Salvação - Hinário</h2><p>Hinos e Inspirações: <b>Deus</b> </p><p>Programador: <b>Peter John Sundays</b></p><p>E-mail: <a href="mailto:peterjohnsundays99@gmail.com">peterjohnsundays99@gmail.com</a></p><p>Data de criação: <b>24/08/2026</b></p><p class="version">Versão do Aplicativo: <b>1.18</b></p></div>';goTop();}
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash').classList.add('hide'),3000));
+loadSettingsForm();
+showHome();
+</script></body></html>
